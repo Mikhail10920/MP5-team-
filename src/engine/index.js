@@ -18,11 +18,18 @@ import * as defaultResources from "./resources/default_resources.js";
 
 // general utilities
 import * as input from "./input.js";
-import Camera from "./camera.js";
 import Scene from "./scene.js";
-import Transform from "./transform.js";
-import BoundingBox from "./bounding_box.js";
-import { eBoundCollideStatus } from "./bounding_box.js";
+import Transform from "./utils/transform.js";
+import BoundingBox from "./utils/bounding_box.js";
+import { eBoundCollideStatus } from "./utils/bounding_box.js";
+import Lerp from "./utils/lerp.js";
+import LerpVec2 from "./utils/lerp_vec2.js";
+import Oscillate from "./utils/oscillate.js";
+import Shake from "./utils/shake.js";
+import ShakeVec2 from "./utils/shake_vec2.js";
+
+// camera and related supports
+import Camera from "./cameras/camera.js";
 
 // renderables 
 import Renderable from "./renderables/renderable.js";
@@ -30,6 +37,7 @@ import TextureRenderable from "./renderables/texture_renderable.js";
 import SpriteRenderable from "./renderables/sprite_renderable.js";
 import SpriteAnimateRenderable from "./renderables/sprite_animate_renderable.js";
 import FontRenderable from "./renderables/font_renderable.js";
+import LineRenderable from "./renderables/line_renderable.js";
 import { eTexCoordArrayIndex } from "./renderables/sprite_renderable.js";
 import { eAnimationType } from "./renderables/sprite_animate_renderable.js";
 
@@ -47,7 +55,7 @@ import * as loop from "./core/loop.js";
 function init(htmlCanvasID) {
     glSys.init(htmlCanvasID);
     vertexBuffer.init();
-    input.init();
+    input.init(htmlCanvasID);
     audio.init();
     shaderResources.init();
     defaultResources.init();
@@ -77,11 +85,14 @@ export default {
     // input support
     input,
 
+    // general utils 
+    Lerp, LerpVec2, Oscillate, Shake, ShakeVec2,
+
     // Util classes
-    Camera, Scene, Transform, BoundingBox,
-    
+    Camera, Scene, Transform, BoundingBox,  
+     
     // Renderables
-    Renderable, TextureRenderable, SpriteRenderable, SpriteAnimateRenderable, FontRenderable,
+    Renderable, TextureRenderable, SpriteRenderable, SpriteAnimateRenderable, FontRenderable, LineRenderable,
 
     // Game Objects
     GameObject, GameObjectSet,

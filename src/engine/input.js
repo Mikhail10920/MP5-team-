@@ -62,6 +62,13 @@ const keys = {
     LastKeyCode: 222
 }
 
+// mouse button enums
+const eMouseButton = Object.freeze({
+    eLeft: 0,
+    eMiddle: 1,
+    eRight: 2
+});
+
 // Previous key state
 let mKeyPreviousState = []; // a new array
 // The pressed keys.
@@ -78,10 +85,47 @@ function onKeyUp(event) {
     mIsKeyPressed[event.keyCode] = false;
 }
 
+ // Support mouse
+let mCanvas = null;
+let mButtonPreviousState = [];
+let mIsButtonPressed = [];
+let mIsButtonClicked = [];
+let mMousePosX = -1;
+let mMousePosY = -1;
+
+function onMouseMove(event) {
+    let inside = false;
+    let bBox = mCanvas.getBoundingClientRect();
+    // In Canvas Space now. Convert via ratio from canvas to client.
+    let x = Math.round((event.clientX - bBox.left) * (mCanvas.width / bBox.width));
+    let y = Math.round((event.clientY - bBox.top) * (mCanvas.height / bBox.height));
+
+    if ((x >= 0) && (x < mCanvas.width) &&
+        (y >= 0) && (y < mCanvas.height)) {
+        mMousePosX = x;
+        mMousePosY = mCanvas.height - 1 - y;
+        inside = true;
+    }
+    return inside;
+}
+
+function onMouseDown(event) {
+    if (onMouseMove(event)) {
+        mIsButtonPressed[event.button] = true;
+    }
+}
+
+function onMouseUp(event) {
+    onMouseMove(event);
+    mIsButtonPressed[event.button] = false;
+}
+
 function cleanUp() {}  // nothing to do for now
 
-function init() {
+function init(canvasID) {
     let i;
+
+    // keyboard support
     for (i = 0; i < keys.LastKeyCode; i++) {
         mIsKeyPressed[i] = false;
         mKeyPreviousState[i] = false;
@@ -91,13 +135,31 @@ function init() {
     // register handlers 
     window.addEventListener('keyup', onKeyUp);
     window.addEventListener('keydown', onKeyDown);
+
+    // Mouse support
+    for (i = 0; i < 3; i++) {
+        mButtonPreviousState[i] = false;
+        mIsButtonPressed[i] = false;
+        mIsButtonClicked[i] = false;
+    }
+    window.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('mousemove', onMouseMove);
+    mCanvas = document.getElementById(canvasID);
 }
 
 function update() {
     let i;
+    // update keyboard input state
     for (i = 0; i < keys.LastKeyCode; i++) {
         mIsKeyClicked[i] = (!mKeyPreviousState[i]) && mIsKeyPressed[i];
         mKeyPreviousState[i] = mIsKeyPressed[i];
+    }
+
+    // update mouse input state
+    for (i = 0; i < 3; i++) {
+        mIsButtonClicked[i] = (!mButtonPreviousState[i]) && mIsButtonPressed[i];
+        mButtonPreviousState[i] = mIsButtonPressed[i];
     }
 }
 
@@ -110,7 +172,25 @@ function isKeyClicked(keyCode) {
     return mIsKeyClicked[keyCode];
 }
 
-export {keys, init, cleanUp,
-    update, 
-    isKeyClicked,
-    isKeyPressed}
+// Functions for query mouse button state and position
+function isButtonPressed(button) {
+    return mIsButtonPressed[button];
+}
+
+function isButtonClicked(button) {
+    return mIsButtonClicked[button];
+}
+function getMousePosX() { return mMousePosX; }
+function getMousePosY() { return mMousePosY; }
+
+export {
+    keys, eMouseButton,
+    
+    init, cleanUp, update, 
+
+    // keyboard
+    isKeyClicked, isKeyPressed,
+
+    // mouse
+    isButtonClicked, isButtonPressed, getMousePosX, getMousePosY
+}
