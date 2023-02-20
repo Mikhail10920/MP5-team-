@@ -22,7 +22,17 @@ class MyGame extends engine.Scene {
         this.mShowLine = true;
         this.timer = 0;
     }
-        
+    
+    load() {
+        engine.texture.load(this.kMinionSprite);
+        engine.texture.load(this.kMinionPortal);
+    }
+
+    unload() {
+        engine.texture.unload(this.kMinionSprite);
+        engine.texture.unload(this.kMinionPortal);
+    }
+
     init() {
         this.mPatrol = new PatrolSet();
         // Step A: set up the cameras
@@ -55,7 +65,7 @@ class MyGame extends engine.Scene {
 
         let j, k;
         for(j = 0; j < this.mPatrol.size(); j++) {
-            k = this.mPatrol[i];
+            k = this.mPatrol.getObjectAt(i);
             k.draw(this.mCamera);
         }
 
@@ -70,7 +80,6 @@ class MyGame extends engine.Scene {
         if(this.timer == 60) {
             this.timer = 0;
             this.mPatrol.addToSet(new Patrol(this.kMinionSprite, this.kMinionPortal, 0, 0));
-            document.write("test");
         }
 
 /*        let msg = "Lines: " + this.mLineSet.length + " ";
