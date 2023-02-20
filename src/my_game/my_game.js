@@ -1,10 +1,14 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 import engine from "../engine/index.js";
+import Patrol from "./object/patrol.js";
+import PatrolSet from "./object/patrol_set.js";
 
 class MyGame extends engine.Scene {
     constructor() {
         super();
+        this.kMinionSprite = "assets/minion_sprite.png";
+        this.kMinionPortal = "assets/minion_portal.png";
 
         // The camera to view the scene
         this.mCamera = null;
@@ -16,22 +20,24 @@ class MyGame extends engine.Scene {
         this.mP1 = null;
 
         this.mShowLine = true;
+        this.timer = 0;
     }
         
     init() {
+        this.mPatrol = new PatrolSet();
         // Step A: set up the cameras
         this.mCamera = new engine.Camera(
-            vec2.fromValues(30, 27.5), // position of the camera
+            vec2.fromValues(0, 0), // position of the camera
             100,                       // width of camera
-            [0, 0, 640, 480]           // viewport (orgX, orgY, width, height)
+            [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
         );
         this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
                 // sets the background to gray
     
-        this.mMsg = new engine.FontRenderable("Status Message");
+/*        this.mMsg = new engine.FontRenderable("Status Message");
         this.mMsg.setColor([0, 0, 0, 1]);
         this.mMsg.getXform().setPosition(-19, -8);
-        this.mMsg.setTextHeight(3);
+        this.mMsg.setTextHeight(3);*/
     }
     
     // This is the draw function, make sure to setup proper drawing environment, and more
@@ -46,13 +52,28 @@ class MyGame extends engine.Scene {
             l = this.mLineSet[i];
             l.draw(this.mCamera);
         }
-        this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+
+        let j, k;
+        for(j = 0; j < this.mPatrol.size(); j++) {
+            k = this.mPatrol[i];
+            k.draw(this.mCamera);
+        }
+
+        //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+        
     }
     
     // The Update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update () {
-        let msg = "Lines: " + this.mLineSet.length + " ";
+        this.timer++;
+        if(this.timer == 60) {
+            this.timer = 0;
+            this.mPatrol.addToSet(new Patrol(this.kMinionSprite, this.kMinionPortal, 0, 0));
+            document.write("test");
+        }
+
+/*        let msg = "Lines: " + this.mLineSet.length + " ";
         let echo = "";
         let x, y;
         
@@ -103,7 +124,7 @@ class MyGame extends engine.Scene {
     
         msg += echo;
         msg += " Show:" + (this.mShowLine ? "Ln" : "Pt");
-        this.mMsg.setText(msg);
+        this.mMsg.setText(msg);*/
     }
 }
 
