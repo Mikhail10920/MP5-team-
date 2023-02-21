@@ -91,13 +91,15 @@ class MyGame extends engine.Scene {
 
         // Step  C: Draw everything
         this.mHero.draw(this.mCamera);
-        this.mBrain.draw(this.mCamera);
+        this.mBrain.draw(this.mCamera);      
         this.mPortal.draw(this.mCamera);
         this.mLMinion.draw(this.mCamera);
         this.mRMinion.draw(this.mCamera);
         this.mPortalHit.draw(this.mCamera);
         this.mHeroHit.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
+
+        this.drawPyePacks();
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
@@ -160,12 +162,33 @@ class MyGame extends engine.Scene {
 
         this.mHero.moveHeroToMousePos( this.mouseXPos, this.mouseYPos);
 
+        if (engine.input.isKeyClicked(engine.input.keys.Space)) { 
+            this.mHero.createAByePack(this.kMinionSprite);
+        }
+
+        if (engine.input.isKeyClicked(engine.input.keys.Q)) { 
+            //console.log("qqqqqqqqq");
+            this.mHero.oscsalateHero();
+        }
+
+
+
         //console.log("x: " + this.mHero.getXform().getPosition()); // + ' : y:' + e.y );
 
 /*         let x = this.mCamera.mouseWCX();
         let y = this.mCamera.mouseWCY();
         console.log(x);
         console.log(y); */
+    }
+
+
+    drawPyePacks() {
+        for(let i = 0; i < this.mHero.dyePacks.length;i++) {
+            this.mHero.dyePacks[i].draw(this.mCamera);
+            //let xpos = this.mHero.dyePacks[i].getXform();
+            //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
+            this.mHero.dyePacks[i].getXform().incXPosBy(this.mHero.dyePackSpeed);
+        }
     }
 
     //https://www.youtube.com/watch?v=P2i11xnrpNI

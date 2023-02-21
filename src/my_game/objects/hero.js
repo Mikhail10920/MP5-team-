@@ -1,6 +1,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 import engine from "../../engine/index.js";
+import DyePack from "./dye_pack.js";
 
 class Hero extends engine.GameObject {
     constructor(spriteTexture) {
@@ -30,6 +31,9 @@ class Hero extends engine.GameObject {
 
         this.framemes = 0;
         this.framesLimeint = false; 
+
+        this.dyePacks = [];
+        this.dyePackSpeed = 1;
     }
 
     update() {
@@ -73,8 +77,8 @@ class Hero extends engine.GameObject {
             let curernt = new Date();
             this.endTime = curernt.getTime() + this.duration;
             this.time = curernt.getTime();
-            console.log(this.time);
-            console.log(this.endTime);
+            //console.log(this.time);
+            //console.log(this.endTime);
 
             //let i = 0;
             //while(this.time < this.endTime) 
@@ -82,6 +86,8 @@ class Hero extends engine.GameObject {
             for(let i = 0; i < this.duration; i++) {
             //await frameCounter();
             //this.requestAnimFrame();
+            //await requestFrameCount(this.framesLimeint);
+            //console.log(this.framesLimeint);
             //while(this.framesLimeint)  {
                 this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
                 await sleep(this.frequency);
@@ -94,7 +100,25 @@ class Hero extends engine.GameObject {
             }
             this.oscsalateActive = false;
         }
+    }    
+
+    createAByePack(sprite) {
+        console.log("aaaaa");
+        let dyePack = new DyePack(sprite);
+        dyePack.setVisibility(true);
+        let xform = dyePack.getXform();
+
+        let pos = this.getXform().getPosition();
+        xform.setXPos(pos[0]);
+        xform.setYPos(pos[1]);
+        let speed = 1;
+        this.dyePacks.push(dyePack);
+/*         while (true) {
+            xform.incXPosBy(speed);
+        } */
     }
+
+    
 
 }
 
@@ -114,16 +138,39 @@ async function sleep(seconds) {
 }
 
 //https://stackoverflow.com/questions/8279729/calculate-fps-in-canvas-using-requestanimationframe
-function requestFrameCount() {
+async function requestFrameCount(framesLimeint) {
 
-    if(!lastCalledTime) {
+/*     let curent = new Date();
+    let time = curent.getTime();
+    let cerentTime = curent.getTime();
+
+    while(cerentTime < time + 60) {
+
+
+
+    } */
+
+
+    for(let i = 0; i < 60;i++) {
+/*         if(!this.framesLimeint) {
+            this.framesLimeint = true;
+        } */
+        framesLimeint = true;
+        await sleep(0.0166);
+        console.log(framesLimeint);
+    }
+    framesLimeint = false;
+    return;
+
+
+/*     if(!lastCalledTime) {
        lastCalledTime = Date.now();
        fps = 0;
        return;
     }
     delta = (Date.now() - lastCalledTime)/1000;
     lastCalledTime = Date.now();
-    fps = 1/delta;
+    fps = 1/delta; */
 } 
 
 
