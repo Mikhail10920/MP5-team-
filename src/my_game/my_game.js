@@ -1,8 +1,8 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 import engine from "../engine/index.js";
-import Patrol from "./object/patrol.js";
-import PatrolSet from "./object/patrol_set.js";
+import Patrol from "./objects/patrol.js";
+import PatrolSet from "./objects/patrol_set.js";
 
 class MyGame extends engine.Scene {
     constructor() {
