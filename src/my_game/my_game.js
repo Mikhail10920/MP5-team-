@@ -4,13 +4,6 @@ import engine from "../engine/index.js";
 
 // user stuff
 import Brain from "./objects/brain.js";
-﻿
-"use strict";  // Operate in Strict mode such that variables must be declared before used!
-
-import engine from "../engine/index.js";
-
-// user stuff
-import Brain from "./objects/brain.js";
 import Hero from "./objects/hero.js";
 import Minion from "./objects/minion.js";
 import DyePack from "./objects/dye_pack.js";
@@ -133,7 +126,8 @@ class MyGame extends engine.Scene {
             this.mPortalHit.setVisibility(false);
         }
 
-        //DyePack touches Patrol Object
+        //DyePack touches Patrol Object MOVE TO hero.js
+        /*
         for (let i = 0; i < this.mHero.dyePacks.length; i++){
             if (this.dyePacks[i].pixelTouches(this.mPortal, h)){
                 delete(dyePacks[i]);
@@ -143,6 +137,7 @@ class MyGame extends engine.Scene {
                 delete(dyePacks[this.mHero.dyePacks.length-2]);
             }
         }
+        */
 
         // hero always collide with Brain (Brain chases hero)
         if (!this.mHero.pixelTouches(this.mBrain, h)) {
@@ -189,8 +184,10 @@ class MyGame extends engine.Scene {
             this.mHero.oscsalateHero();
         }
 
-
-
+        for(let i = 0; i < this.mHero.dyePacks.length;i++) {
+            if (this.mHero.dyePacks[i]);
+        }
+        
         //console.log("x: " + this.mHero.getXform().getPosition()); // + ' : y:' + e.y );
 
 /*         let x = this.mCamera.mouseWCX();
@@ -223,6 +220,10 @@ class MyGame extends engine.Scene {
     }
 
 }
+
+
+
+
 
 window.onload = function () {
     engine.init("GLCanvas");
