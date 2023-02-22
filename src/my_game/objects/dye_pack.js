@@ -1,14 +1,16 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 
+import { unload } from "../../engine/core/resource_map.js";
 import engine from "../../engine/index.js";
 
 class DyePack extends engine.GameObject {
     constructor(spriteTexture) {
         super(null);
+        this.kTime = 0;
         this.kRefWidth = 80;
         this.kRefHeight = 130;
-        this.kDelta = 0.5;
+        this.kDelta = 1;
 
         this.mRenderComponent = new engine.SpriteRenderable(spriteTexture);
         this.mRenderComponent.setColor([1, 1, 1, 0.1]);
@@ -18,23 +20,31 @@ class DyePack extends engine.GameObject {
     }
 
     update() {
-        let xform = this.getXform();
-        if (engine.input.isKeyPressed(engine.input.keys.Up)) {
-            xform.incYPosBy(this.kDelta);
+        this.kTime += 1; //keep track of the time active by frames updated
+
+        if (engine.input.isKeyPressed(engine.input.keys.D)){
+            this.slowDown();
         }
-        if (engine.input.isKeyPressed(engine.input.keys.Down)) {
-            xform.incYPosBy(-this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.Left)) {
-            xform.incXPosBy(-this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.Right)) {
-            xform.incXPosBy(this.kDelta);
+        else{
+            this.dyePackSpeed = 1;
         }
 
         if (this.isVisible()) {
             xform.incYPosBy(-this.kDelta);
         }
+
+        if (this.kTime >= 360){
+            delete(this);
+        }
+    }
+
+    getDelta()
+    {
+        return this.kDelta;
+    }
+
+    slowDown(){
+        this.dyePackSpeed -= 0.1;
     }
 }
 
