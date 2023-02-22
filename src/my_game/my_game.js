@@ -126,6 +126,19 @@ class MyGame extends engine.Scene {
             this.mPortalHit.setVisibility(false);
         }
 
+        //DyePack touches Patrol Object MOVE TO hero.js
+        /*
+        for (let i = 0; i < this.mHero.dyePacks.length; i++){
+            if (this.dyePacks[i].pixelTouches(this.mPortal, h)){
+                delete(dyePacks[i]);
+                for (let j = i; j < this.mHero.dyePacks.length - 1; j++){
+                    dyePacks[j] = dyePacks[j + 1];
+                }
+                delete(dyePacks[this.mHero.dyePacks.length-2]);
+            }
+        }
+        */
+
         // hero always collide with Brain (Brain chases hero)
         if (!this.mHero.pixelTouches(this.mBrain, h)) {
             this.mBrain.rotateObjPointTo(this.mHero.getXform().getPosition(), 0.05);
@@ -171,8 +184,10 @@ class MyGame extends engine.Scene {
             this.mHero.oscsalateHero();
         }
 
-
-
+        for(let i = 0; i < this.mHero.dyePacks.length;i++) {
+            if (this.mHero.dyePacks[i]);
+        }
+        
         //console.log("x: " + this.mHero.getXform().getPosition()); // + ' : y:' + e.y );
 
 /*         let x = this.mCamera.mouseWCX();

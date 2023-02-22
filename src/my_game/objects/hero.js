@@ -37,19 +37,11 @@ class Hero extends engine.GameObject {
     }
 
     update() {
-        // control by WASD
-        let xform = this.getXform();
-        if (engine.input.isKeyPressed(engine.input.keys.W)) {
-            xform.incYPosBy(this.kDelta);
+        if (engine.input.isKeyPressed(engine.input.keys.D)){
+            this.slowDown();
         }
-        if (engine.input.isKeyPressed(engine.input.keys.S)) {
-            xform.incYPosBy(-this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.A)) {
-            xform.incXPosBy(this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.D)) {
-            xform.incXPosBy(-this.kDelta);
+        else{
+            this.dyePackSpeed = 1;
         }
     }
 
@@ -60,14 +52,20 @@ class Hero extends engine.GameObject {
         if(x > pos[0]) {
             xform.incXPosBy(this.kDelta);
         } 
-        else {
+        else if (x < pos[0]){
             xform.incXPosBy(-this.kDelta);   
+        }
+        else{
+            xform.incXPosBy(0);
         }
         if(y > pos[1]) {
             xform.incYPosBy(this.kDelta);
         }
-        else {
+        else if (y < pos[1]){
             xform.incYPosBy(-this.kDelta);
+        }
+        else{
+            xform.incYPosBy(0); 
         }
     }
 
@@ -118,7 +116,9 @@ class Hero extends engine.GameObject {
         } */
     }
 
-    
+    slowDown(){
+        this.dyePackSpeed -= 0.1;
+    }
 
 }
 
