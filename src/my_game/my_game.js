@@ -8,6 +8,8 @@ import Hero from "./objects/hero.js";
 import Minion from "./objects/minion.js";
 import DyePack from "./objects/dye_pack.js";
 import TextureObject from "./objects/texture_object.js";
+import Patrol from "./objects/patrol.js";
+import PatrolSet from "./objects/patrol_set.js";
 
 class MyGame extends engine.Scene {
     constructor() {
@@ -25,6 +27,12 @@ class MyGame extends engine.Scene {
         this.mBrain = null;
         this.mPortalHit = null;
         this.mHeroHit = null;
+
+        //Initalize patrol set
+        this.mPatrolSet = null;
+        this.mTestPatrol = null;
+
+        this.mTimer = null;
 
         this.mPortal = null;
         this.mLMinion = null;
@@ -52,7 +60,7 @@ class MyGame extends engine.Scene {
         this.mCamera = new engine.Camera(
             vec2.fromValues(50, 37.5), // position of the camera
             100,                       // width of camera
-            [0, 0, 640, 480]           // viewport (orgX, orgY, width, height)
+            [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
         );
         this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
         // sets the background to gray
@@ -67,7 +75,14 @@ class MyGame extends engine.Scene {
         this.mHeroHit = new DyePack(this.kMinionSprite);
         this.mHeroHit.setVisibility(false);
 
+        //Initalize patrol set
+        this.mPatrolSet = new PatrolSet();
+        
+        //Starts the timer. 60 variable = 60 frames = 1 second. Should be used throughout all our classes.
+        this.mTimer = 0;
+
         this.mPortal = new TextureObject(this.kMinionPortal, 50, 30, 10, 10);
+        this.mTestPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 30, 30);
 
         this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
         this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
@@ -98,6 +113,13 @@ class MyGame extends engine.Scene {
         this.mPortalHit.draw(this.mCamera);
         this.mHeroHit.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
+        this.mTestPatrol.draw(this.mCamera);
+
+        //Draws all patrols in patrol set
+        let i;
+        for(i = 0; i < this.mPatrolSet.size(); i++) {
+            this.mPatrolSet.getObjectAt(i).draw(this.mCamera);
+        }
 
         this.drawPyePacks();
     }
@@ -105,13 +127,33 @@ class MyGame extends engine.Scene {
     // The update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update() {
+        this.mTimer++;
+        //Trevor's Code
+        this.mTestPatrol.update();
+        
+        if((this.mTimer % 120) == 0) {
+            let tempPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 30, 30);
+            this.mPatrolSet.addToSet(tempPatrol);
+        }
+
+        this.mPatrolSet.update();
+/*        let i, j;
+        let k = [];
+        for(i = 0; i < this.mPatrolSet.size(); i++) {
+            for(j = 0; j < this.mHero.dyePacks.length(); j++) {
+                if(this.mHero.dyePacks[j].pixelTouches(this.mLMinion, k)) {
+
+                }
+            }
+        }*/
+
+        //End of Trevor's Code
         let msg = "L/R: Left or Right Minion; H: Dye; B: Brain]: ";
 
         this.mLMinion.update();
         this.mRMinion.update();
 
         this.mHero.update();
-
         this.mPortal.update(engine.input.keys.Up, engine.input.keys.Down,
             engine.input.keys.Left, engine.input.keys.Right, engine.input.keys.P);
 
