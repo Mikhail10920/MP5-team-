@@ -185,7 +185,7 @@ class MyGame extends engine.Scene {
         }
 
         for(let i = 0; i < this.mHero.dyePacks.length;i++) {
-            if (this.mHero.dyePacks[i])
+            if (this.mHero.dyePacks[i]);
         }
         
         //console.log("x: " + this.mHero.getXform().getPosition()); // + ' : y:' + e.y );
