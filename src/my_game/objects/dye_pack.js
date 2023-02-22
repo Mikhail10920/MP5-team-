@@ -33,7 +33,7 @@ class DyePack extends engine.GameObject {
             xform.incYPosBy(-this.kDelta);
         }
 
-        if (this.kTime >= 360){
+        if (this. >= kTime + 360){
             delete(this);
         }
     }
