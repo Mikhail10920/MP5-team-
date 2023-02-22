@@ -44,10 +44,10 @@ class MyGame extends engine.Scene {
         this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
                 // sets the background to gray
     
-/*        this.mMsg = new engine.FontRenderable("Status Message");
+        this.mMsg = new engine.FontRenderable("Status Message");
         this.mMsg.setColor([0, 0, 0, 1]);
         this.mMsg.getXform().setPosition(-19, -8);
-        this.mMsg.setTextHeight(3);*/
+        this.mMsg.setTextHeight(3);
     }
     
     // This is the draw function, make sure to setup proper drawing environment, and more
@@ -69,7 +69,7 @@ class MyGame extends engine.Scene {
             k.draw(this.mCamera);
         }
 
-        //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+        this.mMsg.draw(this.mCamera);   // only draw status in the main camera
         
     }
     
@@ -82,7 +82,7 @@ class MyGame extends engine.Scene {
             this.mPatrol.addToSet(new Patrol(this.kMinionSprite, this.kMinionPortal, 0, 0));
         }
 
-/*        let msg = "Lines: " + this.mLineSet.length + " ";
+        let msg = "Lines: " + this.mLineSet.length + " ";
         let echo = "";
         let x, y;
         
@@ -133,7 +133,7 @@ class MyGame extends engine.Scene {
     
         msg += echo;
         msg += " Show:" + (this.mShowLine ? "Ln" : "Pt");
-        this.mMsg.setText(msg);*/
+        this.mMsg.setText(msg);
     }
 }
 
