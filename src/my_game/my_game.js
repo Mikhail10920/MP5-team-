@@ -30,9 +30,9 @@ class MyGame extends engine.Scene {
 
         //Initalize patrol set
         this.mPatrolSet = null;
-        this.mTestPatrol = null;
-
-        this.mTimer = null;
+        this.mPatrolSpawn = null;
+        this.mPatrolTimer = null;
+        this.mPatrolSpawnTimer = null;
 
         this.mPortal = null;
         this.mLMinion = null;
@@ -43,6 +43,9 @@ class MyGame extends engine.Scene {
 
         this.mouseXPos = 0;
         this.mouseYPos = 0;
+
+        this.mPatrolTotal = 0;
+        this.mDyePackTotal = 0;
     }
 
     load() {
@@ -63,6 +66,13 @@ class MyGame extends engine.Scene {
             [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
         );
         this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
+
+        this.mMiniCamera1 = new engine.Camera(
+            vec2.fromValues(50, 37.5), // position of the camera
+            15,                       // width of camera
+            [50, 50, 100, 100]           // viewport (orgX, orgY, width, height)
+        );
+        this.mMiniCamera1.setBackgroundColor([0, 0, 1, 1]);
         // sets the background to gray
 
         this.mBrain = new Brain(this.kMinionSprite);
@@ -78,11 +88,14 @@ class MyGame extends engine.Scene {
         //Initalize patrol set
         this.mPatrolSet = new PatrolSet();
         
+        //Initalize patrol spawn as false
+        this.mPatrolSpawn = false;
+
         //Starts the timer. 60 variable = 60 frames = 1 second. Should be used throughout all our classes.
-        this.mTimer = 0;
+        this.mPatrolTimer = 1;
+        this.mPatrolSpawnTimer = 121;
 
         this.mPortal = new TextureObject(this.kMinionPortal, 50, 30, 10, 10);
-        this.mTestPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 30, 30);
 
         this.mLMinion = new Minion(this.kMinionSprite, 30, 30);
         this.mRMinion = new Minion(this.kMinionSprite, 70, 30);
@@ -90,7 +103,7 @@ class MyGame extends engine.Scene {
         this.mMsg = new engine.FontRenderable("Status Message");
         this.mMsg.setColor([0, 0, 0, 1]);
         this.mMsg.getXform().setPosition(1, 2);
-        this.mMsg.setTextHeight(3);
+        this.mMsg.setTextHeight(2);
 
         this.mCollide = this.mHero;
     }
@@ -113,7 +126,6 @@ class MyGame extends engine.Scene {
         this.mPortalHit.draw(this.mCamera);
         this.mHeroHit.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
-        this.mTestPatrol.draw(this.mCamera);
 
         //Draws all patrols in patrol set
         let i;
@@ -122,33 +134,57 @@ class MyGame extends engine.Scene {
         }
 
         this.drawPyePacks();
+
+        this.mMiniCamera1.setViewAndCameraMatrix();
+
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update() {
-        this.mTimer++;
         //Trevor's Code
-        this.mTestPatrol.update();
-        
-        if((this.mTimer % 120) == 0) {
-            let tempPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 30, 30);
+
+        if(this.mPatrolSpawn) {
+            this.mPatrolTimer++;
+        }
+
+        //Sets patrol spawn
+        if (engine.input.isKeyClicked(engine.input.keys.P)) {
+            this.mPatrolSpawn = !this.mPatrolSpawn;
+            this.mPatrolTimer = 1;
+        }
+
+        if(((this.mPatrolTimer % this.mPatrolSpawnTimer) == 0) && this.mPatrolSpawn) {
+            let tempPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 
+            ((Math.floor(Math.random() * 45) + 50)), 
+            (Math.floor(Math.random() * 50)));
             this.mPatrolSet.addToSet(tempPatrol);
+            this.mPatrolSpawnTimer = Math.floor(Math.random() * 180) + 120;
+            this.mPatrolTimer = 1;
+            this.mPatrolTotal++;
         }
 
         this.mPatrolSet.update();
-/*        let i, j;
+/*        let i;
+        let j = [];
+        for(i = 0; i < this.mPatrolSet.size(); i++) {
+            if(this.mPatrolSet.mWing.pixelTouches(this.mCollide, j)) {
+                document.write("GOT DAMN");
+            }
+        }*/
+
+ /*       let i, j;
         let k = [];
         for(i = 0; i < this.mPatrolSet.size(); i++) {
             for(j = 0; j < this.mHero.dyePacks.length(); j++) {
-                if(this.mHero.dyePacks[j].pixelTouches(this.mLMinion, k)) {
-
+                if(this.mHero.dyePacks[j].pixelTouches(this.mPortal, k)) {
+                    document.write("GOT DAMN!!!");
                 }
             }
         }*/
 
         //End of Trevor's Code
-        let msg = "L/R: Left or Right Minion; H: Dye; B: Brain]: ";
+        let msg = "Patrol Spawned Total: " + this.mPatrolTotal + " Dyepack Spawned Total: " + this.mDyePackTotal + " AutoSpawn: " + this.mPatrolSpawn;
 
         this.mLMinion.update();
         this.mRMinion.update();
@@ -219,6 +255,7 @@ class MyGame extends engine.Scene {
 
         if (engine.input.isKeyClicked(engine.input.keys.Space)) { 
             this.mHero.createAByePack(this.kMinionSprite);
+            this.mDyePackTotal++;
         }
 
         if (engine.input.isKeyClicked(engine.input.keys.Q)) { 
