@@ -177,7 +177,6 @@ class MyGame extends engine.Scene {
         this.mMiniCamera1.update();
         if(this.mPatrolSpawn) {
             this.mPatrolTimer++;
-            document.write(this.mMiniCamera1.getWCCenter()[0] + " " + this.mMiniCamera1.getWCCenter()[1]);
         }
 
         //Sets patrol spawn
