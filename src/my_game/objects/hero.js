@@ -49,14 +49,20 @@ class Hero extends engine.GameObject {
         if(x > pos[0]) {
             xform.incXPosBy(this.kDelta);
         } 
-        else {
+        else if (x < pos[0]){
             xform.incXPosBy(-this.kDelta);   
+        }
+        else{
+            xform.incXPosBy(0);
         }
         if(y > pos[1]) {
             xform.incYPosBy(this.kDelta);
         }
-        else {
+        else if (y < pos[1]){
             xform.incYPosBy(-this.kDelta);
+        }
+        else{
+            xform.incYPosBy(0); 
         }
     }
 

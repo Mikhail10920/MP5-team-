@@ -1,11 +1,13 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 
+import { unload } from "../../engine/core/resource_map.js";
 import engine from "../../engine/index.js";
 
 class DyePack extends engine.GameObject {
     constructor(spriteTexture) {
         super(null);
+        this.kTime = 0;
         this.kRefWidth = 80;
         this.kRefHeight = 130;
         this.kDelta = 1;
@@ -19,16 +21,30 @@ class DyePack extends engine.GameObject {
 
     update() {
         let xform = this.getXform();
-        if (engine.input.isKeyPressed(engine.input.keys.D)) {
+
+        if (engine.input.isKeyPressed(engine.input.keys.D)){
             this.slowDown();
         }
         else{
             this.kDelta = 1;
         }
+    }
+
+    getDelta()
+    {
+        return this.kDelta;
+    }
+
+    slowDown(){
+        this.dyePackSpeed -= 0.1;
+    }
+
+    slowDown(){
+        this.kDelta -= 0.1;
+    }
+
+    hit(){
         
-        if (this.isVisible()) {
-            xform.incYPosBy(-this.kDelta);
-        }
     }
 
     slowDown(){
