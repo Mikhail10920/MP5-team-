@@ -118,6 +118,10 @@ class Patrol extends engine.GameObject {
         this.mWingBot.getXform().setXPos(this.mHead.getXform().getXPos() + 10);
         this.mWingBot.getXform().setYPos(this.mHead.getXform().getYPos() - 6);
 
+
+        this.mWingTop.update();
+        this.mWingBot.update();
+
         this.checkForColisions();
     }
 
