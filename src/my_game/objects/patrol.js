@@ -28,6 +28,7 @@ class Patrol extends engine.GameObject {
         this.mWingTop = new Minion(this.kMinionSprite, atX, atY);
         this.mWingBot = new Minion(this.kMinionSprite, atX, atY);
 
+        //Boundary lines
         this.mBoundaryLeft = new LineRenderable(atX, atY, atX, atY);
         this.mBoundaryRight = new LineRenderable(atX, atY, atX, atY);
         this.mBoundaryTop = new LineRenderable(atX, atY, atX, atY);
@@ -48,52 +49,25 @@ class Patrol extends engine.GameObject {
         this.mBotBoundTop = new LineRenderable(atX, atY, atX, atY);
         this.mBotBoundBot = new LineRenderable(atX, atY, atX, atY);
 
+        //Toggled by pressing B
         this.showBoundary = false;
 
         this.mCollide = hero;
         this.mOffset = 0;
+
+        //Handles invincibility frames
         this.mRecentHit = false;
         this.mInvFrame = 0.0;
+        this.mIsHit = false;
+        this.mIndexOfDye = -1;
+
+        //If true, removes from set
         this.mCanDelete = false;
-
-/*         this.mHead = new engine.SpriteRenderable(spriteTextureHead);
-
-        this.mHead.setColor([1, 1, 1, 0]);
-        this.mHead.getXform().setPosition(atX, atY);
-        this.mHead.getXform().setSize(7.5, 7.5);
-        //this.mHead.setElementPixelPositions(510, 595, 23, 153);
-
-        this.mWingTop = new engine.SpriteAnimateRenderable(spriteTexture);
-        this.mWingTop.setColor([1, 1, 1, 0]);
-        this.mWingTop.getXform().setPosition(atX + 10, atY + 6);
-        this.mWingTop.getXform().setSize(10, 8);
-        this.mWingTop.setSpriteSequence(512, 0,      // first element pixel position: top-left 512 is top of image, 0 is left of image
-            204, 164,   // width x height in pixels
-            5,          // number of elements in this sequence
-            0);         // horizontal padding in between
-        this.mWingTop.setAnimationType(engine.eAnimationType.eSwing);
-        this.mWingTop.setAnimationSpeed(30);
-        //this.mWingTop.setElementPixelPositions(510, 595, 23, 153);
-
-        // show each element for mAnimSpeed updates
-        this.mWingBot = new engine.SpriteAnimateRenderable(spriteTexture);
-        this.mWingBot.setColor([1, 1, 1, 0]);
-        this.mWingBot.getXform().setPosition(atX + 10, atY - 6);
-        this.mWingBot.getXform().setSize(10, 8);
-        this.mWingBot.setSpriteSequence(512, 0,      // first element pixel position: top-left 512 is top of image, 0 is left of image
-            204, 164,   // width x height in pixels
-            5,          // number of elements in this sequence
-            0);         // horizontal padding in between
-        this.mWingBot.setAnimationType(engine.eAnimationType.eSwing);
-        this.mWingBot.setAnimationSpeed(30);
-        //this.mWingBot.setElementPixelPositions(510, 595, 23, 153); */
         
         //Util variables
         this.mCurrentDirection = null;
         this.mMoveUnit = 0.0;
         this.mMoveRate = 0.0;
-        
-        //console.log("Spawn");
     }
 
     load() {
@@ -244,6 +218,8 @@ class Patrol extends engine.GameObject {
                 this.mHead.getXform().incXPosBy(this.mOffset);
                 this.mRecentHit = true;
                 this.mInvFrame = 0;
+                this.mIsHit = true;
+                this.mIndexOfDye = i;
             }
             if (this.mWingTop.pixelTouches(this.mCollide.dyePacks[i], h) && !this.mRecentHit) {
                 if(this.mWingTop.mRenderComponent.getColor()[3] >= 1) {
@@ -256,6 +232,8 @@ class Patrol extends engine.GameObject {
                         this.mWingTop.mRenderComponent.getColor()[3] + .3]);
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
+                        this.mIsHit = true;
+                        this.mIndexOfDye = i;
                 }
             }
 
@@ -270,6 +248,8 @@ class Patrol extends engine.GameObject {
                         this.mWingBot.mRenderComponent.getColor()[3] + .3]);
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
+                        this.mIsHit = true;
+                        this.mIndexOfDye = i;
                 }
             }
         }

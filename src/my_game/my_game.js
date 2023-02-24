@@ -17,6 +17,9 @@ class MyGame extends engine.Scene {
         this.kMinionSprite = "assets/minion_sprite.png";
         this.kMinionPortal = "assets/minion_portal.png";
 
+        //Background
+        this.mBackground = null;
+
         // The camera to view the scene
         this.mCamera = null;
         this.mMiniCamera1 = null;
@@ -44,6 +47,18 @@ class MyGame extends engine.Scene {
         this.mPatrolTotal = 0;
         this.mDyePackTotal = 0;
         this.mToggleBoundary = false;
+
+        this.mToggleCamera1 = false;
+        this.mCamera1Follow = null;
+
+        this.mToggleCamera2 = false;
+        this.mCamera2Follow = null;
+
+        this.mToggleCamera3 = false;
+        this.mCamera3Follow = null;
+
+        this.mToggleCamera4 = false;
+        this.mCamera4Follow = null;
     }
 
     load() {
@@ -63,7 +78,7 @@ class MyGame extends engine.Scene {
             200,                       // width of camera
             [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
         );
-        this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
+        this.mCamera.setBackgroundColor([0.5, 0, 0.5, 1]);
 
         this.mMiniCamera1 = new engine.Camera(
             vec2.fromValues(35, 50), // position of the camera
@@ -135,17 +150,25 @@ class MyGame extends engine.Scene {
 
         this.drawPyePacks();
 
-        this.mMiniCamera1.setViewAndCameraMatrix();
-        this.mHero.draw(this.mMiniCamera1);
+        if(this.mToggleCamera1) {
+            this.mMiniCamera1.setViewAndCameraMatrix();
+            this.mHero.draw(this.mMiniCamera1);
+        }
 
-        this.mMiniCamera2.setViewAndCameraMatrix();
-        this.mHero.draw(this.mMiniCamera2);
+        if(this.mToggleCamera2) {
+            this.mMiniCamera2.setViewAndCameraMatrix();
+            this.mHero.draw(this.mMiniCamera2);
+        }
 
-        this.mMiniCamera3.setViewAndCameraMatrix();
-        this.mHero.draw(this.mMiniCamera3);
+        if(this.mToggleCamera3) {
+            this.mMiniCamera3.setViewAndCameraMatrix();
+            this.mHero.draw(this.mMiniCamera3);
+        }
 
-        this.mMiniCamera4.setViewAndCameraMatrix();
-        this.mHero.draw(this.mMiniCamera4);
+        if(this.mToggleCamera4) {
+            this.mMiniCamera4.setViewAndCameraMatrix();
+            this.mHero.draw(this.mMiniCamera4);
+        }
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
@@ -164,14 +187,38 @@ class MyGame extends engine.Scene {
             this.mPatrolTimer = 1;
         }
 
+        //Shows all boundaries of every patrol. Causes a TON of lag. Debug.
         if(engine.input.isKeyClicked(engine.input.keys.B)) {
             this.mToggleBoundary = !this.mToggleBoundary;
         }
-
-        for(let i = 0; i < this.mPatrolSet.size(); i++) {
-            this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
+        
+        //Camera Controls
+        if(engine.input.isKeyClicked(engine.input.keys.Zero)) {
+            this.mToggleCamera1 = !this.mToggleCamera1;
         }
 
+        if(engine.input.isKeyClicked(engine.input.keys.One)) {
+            this.mToggleCamera2 = !this.mToggleCamera2;
+        }
+
+        if(engine.input.isKeyClicked(engine.input.keys.Two)) {
+            this.mToggleCamera3 = !this.mToggleCamera3;
+        }
+
+        if(engine.input.isKeyClicked(engine.input.keys.Three)) {
+            this.mToggleCamera4 = !this.mToggleCamera4;
+        }
+
+        //Toggle boundary AND check for hit event
+        for(let i = 0; i < this.mPatrolSet.size(); i++) {
+            this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
+
+            if(this.mPatrolSet.getObjectAt(i).mIsHit) {
+
+            }
+        }
+
+        //Force spawns a patrol
         if (engine.input.isKeyClicked(engine.input.keys.C)) {
             let tempPatrol = new Patrol(this.mHero, this.kMinionSprite, this.kMinionPortal, 
             (Math.floor(Math.random() * 90) + 50), //Limit of 145 to -50
@@ -180,12 +227,14 @@ class MyGame extends engine.Scene {
             this.mPatrolTotal++;
         }
 
+        //Hits all heads once. Debug button
         if(engine.input.isKeyClicked(engine.input.keys.J)) {
             for(let i = 0; i < this.mPatrolSet.size(); i++) {
                 this.mPatrolSet.getObjectAt(i).headHitDebug();
             }
         }
 
+        //Spawns patrol based on a timer
         if(((this.mPatrolTimer % this.mPatrolSpawnTimer) == 0) && this.mPatrolSpawn) {
             let tempPatrol = new Patrol(this.mHero, this.kMinionSprite, this.kMinionPortal, 
             ((Math.floor(Math.random() * 100) + 50)), 
@@ -198,6 +247,7 @@ class MyGame extends engine.Scene {
 
         this.mPatrolSet.update();
 
+        //Constantly checks to delete any patrols that meets the requirements.
         for(let i = 0; i < this.mPatrolSet.size(); i++) {
             if(this.mPatrolSet.getObjectAt(i).mCanDelete == true) {
                 this.mPatrolSet.removeFromSet(this.mPatrolSet.getObjectAt(i));
@@ -205,25 +255,14 @@ class MyGame extends engine.Scene {
         }
 
         //End of Trevor's Code
+
+        //Message output
         let msg = "Patrol Spawned Total: " + this.mPatrolTotal + 
         " Dyepack Spawned Total: " + this.mDyePackTotal + 
         " AutoSpawn: " + this.mPatrolSpawn +
         "Mouse X and Y " + this.mouseXPos + " " + this.mouseYPos;
-        
 
         this.mHero.update();
-        //DyePack touches Patrol Object MOVE TO hero.js
-        /*
-        for (let i = 0; i < this.mHero.dyePacks.length; i++){
-            if (this.dyePacks[i].pixelTouches(this.mPortal, h)){
-                delete(dyePacks[i]);
-                for (let j = i; j < this.mHero.dyePacks.length - 1; j++){
-                    dyePacks[j] = dyePacks[j + 1];
-                }
-                delete(dyePacks[this.mHero.dyePacks.length-2]);
-            }
-        }
-        */
 
         // decide which to collide
         if (engine.input.isKeyClicked(engine.input.keys.L)) {
@@ -255,16 +294,13 @@ class MyGame extends engine.Scene {
         }
 
         if (engine.input.isKeyClicked(engine.input.keys.Q)) { 
-            //console.log("qqqqqqqqq");
             this.mHero.oscsalateHero();
         }
 
         for(let i = 0; i < this.mHero.dyePacks.length;i++) {
             if (this.mHero.dyePacks[i]);
         }
-
     }
-
 
     drawPyePacks() {
         for(let i = 0; i < this.mHero.dyePacks.length;i++) {
