@@ -8,13 +8,14 @@ import Hero from "./objects/hero.js";
 import Minion from "./objects/minion.js";
 import DyePack from "./objects/dye_pack.js";
 import TextureObject from "./objects/texture_object.js";
+import Status from "./objects/status.js";
 
 class MyGame extends engine.Scene {
     constructor() {
         super();
         this.kMinionSprite = "assets/minion_sprite.png";
         this.kMinionPortal = "assets/minion_portal.png";
-
+      
         // The camera to view the scene
         this.mCamera = null;
 
@@ -35,6 +36,8 @@ class MyGame extends engine.Scene {
 
         this.mouseXPos = 0;
         this.mouseYPos = 0;
+
+        this.status = null;
     }
 
     load() {
@@ -78,6 +81,9 @@ class MyGame extends engine.Scene {
         this.mMsg.setTextHeight(3);
 
         this.mCollide = this.mHero;
+
+
+        this.status = new Status();
     }
 
     // This is the draw function, make sure to setup proper drawing environment, and more
@@ -105,9 +111,11 @@ class MyGame extends engine.Scene {
     // The update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update() {
-        let msg = "L/R: Left or Right Minion; H: Dye; B: Brain]: ";
 
-        this.mLMinion.update();
+        let msg = "Patrols: " + this.status.getNumOfPatr() + " DyePacks: " + 
+          this.status.getNumbOfDyePacks() + " AutoSpawn State: " + this.status.getStateOfAutoSpawn() + "  ";//"L/R: Left or Right Minion; H: Dye; B: Brain]: ";
+
+        this.mLMinion.update();  
         this.mRMinion.update();
 
         this.mHero.update();
@@ -164,6 +172,7 @@ class MyGame extends engine.Scene {
 
         if (engine.input.isKeyClicked(engine.input.keys.Space)) { 
             this.mHero.createAByePack(this.kMinionSprite);
+            this.status.chengeNumOfDyePacks(1);
         }
 
         if (engine.input.isKeyClicked(engine.input.keys.Q)) { 
