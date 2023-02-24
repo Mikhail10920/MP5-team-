@@ -3,15 +3,15 @@
 import engine from "../../engine/index.js";
 
 class Brain extends engine.GameObject {
-    constructor(spriteTexture) {
+    constructor(spriteTexture, atX, atY) {
         super(null);
         this.kDeltaDegree = 1;
         this.kDeltaRad = Math.PI * this.kDeltaDegree / 180;
         this.kDeltaSpeed = 0.01;
         this.mRenderComponent =  new engine.SpriteRenderable(spriteTexture);
         this.mRenderComponent.setColor([1, 1, 1, 0]);
-        this.mRenderComponent.getXform().setPosition(50, 10);
-        this.mRenderComponent.getXform().setSize(3, 5.4);
+        this.mRenderComponent.getXform().setPosition(atX, atY);
+        this.mRenderComponent.getXform().setSize(7.5, 7.5);
         this.mRenderComponent.setElementPixelPositions(600, 700, 0, 180);
 
         this.setSpeed(0.05);
