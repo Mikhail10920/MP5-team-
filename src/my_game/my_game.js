@@ -99,7 +99,7 @@ class MyGame extends engine.Scene {
         this.mHeroHit.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
 
-        this.drawPyePacks();
+        this.mHero.drawPyePacks(this.mCamera);
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
@@ -179,16 +179,6 @@ class MyGame extends engine.Scene {
         let y = this.mCamera.mouseWCY();
         console.log(x);
         console.log(y); */
-    }
-
-
-    drawPyePacks() {
-        for(let i = 0; i < this.mHero.dyePacks.length;i++) {
-            this.mHero.dyePacks[i].draw(this.mCamera);
-            //let xpos = this.mHero.dyePacks[i].getXform();
-            //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
-            this.mHero.dyePacks[i].getXform().incXPosBy(this.mHero.dyePackSpeed);
-        }
     }
 
     //https://www.youtube.com/watch?v=P2i11xnrpNI

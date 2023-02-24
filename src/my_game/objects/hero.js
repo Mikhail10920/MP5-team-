@@ -33,24 +33,13 @@ class Hero extends engine.GameObject {
         this.framesLimeint = false; 
 
         this.dyePacks = [];
-        this.dyePackSpeed = 1;
     }
 
     update() {
         // control by WASD
         let xform = this.getXform();
-        if (engine.input.isKeyPressed(engine.input.keys.W)) {
-            xform.incYPosBy(this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.S)) {
-            xform.incYPosBy(-this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.A)) {
-            xform.incXPosBy(this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.D)) {
-            xform.incXPosBy(-this.kDelta);
-        }
+        
+        //Collision-based SlowDown
     }
 
     moveHeroToMousePos(x,y) {
@@ -118,7 +107,15 @@ class Hero extends engine.GameObject {
         } */
     }
 
-    
+    drawPyePacks(camera) {
+        //console.log(this.dyePacks);
+        for(let i = 0; i < this.dyePacks.length; i++) {
+            this.dyePacks[i].draw(camera);
+            //let xpos = this.mHero.dyePacks[i].getXform();
+            //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
+            this.dyePacks[i].getXform().incXPosBy(this.dyePacks[i].kDelta);
+        }
+    }
 
 }
 

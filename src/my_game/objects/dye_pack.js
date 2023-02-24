@@ -8,7 +8,7 @@ class DyePack extends engine.GameObject {
         super(null);
         this.kRefWidth = 80;
         this.kRefHeight = 130;
-        this.kDelta = 0.5;
+        this.kDelta = 1;
 
         this.mRenderComponent = new engine.SpriteRenderable(spriteTexture);
         this.mRenderComponent.setColor([1, 1, 1, 0.1]);
@@ -19,22 +19,24 @@ class DyePack extends engine.GameObject {
 
     update() {
         let xform = this.getXform();
-        if (engine.input.isKeyPressed(engine.input.keys.Up)) {
-            xform.incYPosBy(this.kDelta);
+        if (engine.input.isKeyPressed(engine.input.keys.D)) {
+            this.slowDown();
         }
-        if (engine.input.isKeyPressed(engine.input.keys.Down)) {
-            xform.incYPosBy(-this.kDelta);
+        else{
+            this.kDelta = 1;
         }
-        if (engine.input.isKeyPressed(engine.input.keys.Left)) {
-            xform.incXPosBy(-this.kDelta);
-        }
-        if (engine.input.isKeyPressed(engine.input.keys.Right)) {
-            xform.incXPosBy(this.kDelta);
-        }
-
+        
         if (this.isVisible()) {
             xform.incYPosBy(-this.kDelta);
         }
+    }
+
+    slowDown(){
+        this.kDelta -= 0.1;
+    }
+
+    hit(){
+        
     }
 }
 
