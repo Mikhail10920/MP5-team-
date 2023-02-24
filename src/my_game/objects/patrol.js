@@ -2,12 +2,33 @@
 
 import engine from "../../engine/index.js";
 
+import Brain from "./brain.js";
+//import Hero from "./objects/hero.js";
+import Minion from "./minion.js";
+
+
+
 class Patrol extends engine.GameObject {
-    constructor(spriteTexture, spriteTextureHead, atX, atY) {
+    constructor(hero, spriteTexture, spriteTextureHead, atX, atY) {
         super(null);
 
         this.kDelta = 0.2;
-        this.mHead = new engine.SpriteRenderable(spriteTextureHead);
+
+        this.kMinionSprite = "assets/minion_sprite.png";
+        this.kMinionPortal = "assets/minion_portal.png";
+
+        this.mHead = null;
+        this.mWingTop = null;
+        this.mWingBot = null;
+        this.mCollide = null;
+
+        this.mHead = new Brain(this.kMinionSprite);
+        this.mWingTop = new Minion(this.kMinionSprite, 30, 30);
+        this.mWingBot = new Minion(this.kMinionSprite, 70, 30);
+
+        this.mCollide = hero;
+
+/*         this.mHead = new engine.SpriteRenderable(spriteTextureHead);
 
         this.mHead.setColor([1, 1, 1, 0]);
         this.mHead.getXform().setPosition(atX, atY);
@@ -37,12 +58,24 @@ class Patrol extends engine.GameObject {
             0);         // horizontal padding in between
         this.mWingBot.setAnimationType(engine.eAnimationType.eSwing);
         this.mWingBot.setAnimationSpeed(30);
-        //this.mWingBot.setElementPixelPositions(510, 595, 23, 153);
+        //this.mWingBot.setElementPixelPositions(510, 595, 23, 153); */
         
         //Util variables
         this.mCurrentDirection = null;
         this.mMoveUnit = 0.0;
         this.mMoveRate = 0.0;
+        
+        //console.log("Spawn");
+    }
+
+    load() {
+        engine.texture.load(this.kMinionSprite);
+        engine.texture.load(this.kMinionPortal);
+    }
+
+    unload() {
+        engine.texture.unload(this.kMinionSprite);
+        engine.texture.unload(this.kMinionPortal);
     }
 
     draw(camera) {
@@ -53,8 +86,8 @@ class Patrol extends engine.GameObject {
 
     update() {
         // remember to update this.mRenderComponent's animation
-        this.mWingTop.updateAnimation();
-        this.mWingBot.updateAnimation();
+        //this.mWingTop.updateAnimation();
+        //this.mWingBot.updateAnimation();
         
         if(this.mMoveUnit <= 0) {
             this.mCurrentDirection = Math.floor(Math.random() * 4); //0 - 3
@@ -84,10 +117,25 @@ class Patrol extends engine.GameObject {
 
         this.mWingBot.getXform().setXPos(this.mHead.getXform().getXPos() + 10);
         this.mWingBot.getXform().setYPos(this.mHead.getXform().getYPos() - 6);
+
+        this.checkForColisions();
     }
 
     isDead() {
         
+    }
+
+    checkForColisions() {
+        let h = []; 
+        if (this.mHead.pixelTouches(this.mCollide, h)) {
+            console.log("collision"); 
+        }
+        if (this.mWingTop.pixelTouches(this.mCollide, h)) {
+            console.log("collision"); 
+        }
+        if (this.mWingBot.pixelTouches(this.mCollide, h)) {
+            console.log("collision"); 
+        }
     }
 }
 

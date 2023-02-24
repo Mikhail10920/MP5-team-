@@ -27,6 +27,7 @@ class MyGame extends engine.Scene {
         this.mHero = null;
         this.mBrain = null;
         this.mPortalHit = null;
+        this.mLeftWingHit = null;
         this.mHeroHit = null;
 
         //Initalize patrol set
@@ -103,6 +104,10 @@ class MyGame extends engine.Scene {
 
         this.mPortalHit = new DyePack(this.kMinionSprite);
         this.mPortalHit.setVisibility(false);
+
+        this.mLeftWingHit = new DyePack(this.kMinionSprite);
+        this.mLeftWingHit.setVisibility(false);
+
         this.mHeroHit = new DyePack(this.kMinionSprite);
         this.mHeroHit.setVisibility(false);
 
@@ -145,6 +150,9 @@ class MyGame extends engine.Scene {
         this.mLMinion.draw(this.mCamera);
         this.mRMinion.draw(this.mCamera);
         this.mPortalHit.draw(this.mCamera);
+
+        this.mLeftWingHit.draw(this.mCamera);
+
         this.mHeroHit.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
 
@@ -172,6 +180,8 @@ class MyGame extends engine.Scene {
     // The update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update() {
+
+        
         //Trevor's Code
         this.mMiniCamera1.setWCCenter(this.mHero.mRenderComponent.getXform().getXPos(), this.mHero.mRenderComponent.getXform().getYPos());
         this.mMiniCamera1.update();
@@ -185,8 +195,9 @@ class MyGame extends engine.Scene {
             this.mPatrolTimer = 1;
         }
 
-        if(((this.mPatrolTimer % this.mPatrolSpawnTimer) == 0) && this.mPatrolSpawn) {
-            let tempPatrol = new Patrol(this.kMinionSprite, this.kMinionPortal, 
+        //if(((this.mPatrolTimer % this.mPatrolSpawnTimer) == 0) && this.mPatrolSpawn) {
+        if (engine.input.isKeyClicked(engine.input.keys.P)) {
+            let tempPatrol = new Patrol(this.mHero, this.kMinionSprite, this.kMinionPortal, 
             ((Math.floor(Math.random() * 45) + 50)), 
             (Math.floor(Math.random() * 50)));
             this.mPatrolSet.addToSet(tempPatrol);
@@ -233,6 +244,15 @@ class MyGame extends engine.Scene {
             this.mPortalHit.getXform().setYPos(h[1]);
         } else {
             this.mPortalHit.setVisibility(false);
+        }
+
+        // Portal intersects with which ever is selected
+        if (this.mRMinion.pixelTouches(this.mCollide, h)) {
+            this.mLeftWingHit.setVisibility(true);
+            this.mLeftWingHit.getXform().setXPos(h[0]);
+            this.mLeftWingHit.getXform().setYPos(h[1]);
+        } else {
+            this.mLeftWingHit.setVisibility(false);
         }
 
         //DyePack touches Patrol Object MOVE TO hero.js
