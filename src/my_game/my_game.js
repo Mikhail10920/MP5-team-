@@ -19,6 +19,7 @@ class MyGame extends engine.Scene {
 
         // The camera to view the scene
         this.mCamera = null;
+        this.mMiniCamera1 = null;
 
         this.mMsg = null;
 
@@ -68,12 +69,32 @@ class MyGame extends engine.Scene {
         this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
         this.mMiniCamera1 = new engine.Camera(
-            vec2.fromValues(50, 37.5), // position of the camera
+            vec2.fromValues(35, 50), // position of the camera
             15,                       // width of camera
-            [50, 50, 100, 100]           // viewport (orgX, orgY, width, height)
+            [25, 625, 150, 150]           // viewport (orgX, orgY, width, height)
         );
         this.mMiniCamera1.setBackgroundColor([0, 0, 1, 1]);
-        // sets the background to gray
+
+        this.mMiniCamera2 = new engine.Camera(
+            vec2.fromValues(35, 50), // position of the camera
+            6,                       // width of camera
+            [200, 625, 150, 150]           // viewport (orgX, orgY, width, height)
+        );
+        this.mMiniCamera2.setBackgroundColor([0, 1, 0, 1]);
+
+        this.mMiniCamera3 = new engine.Camera(
+            vec2.fromValues(35, 50), // position of the camera
+            6,                       // width of camera
+            [375, 625, 150, 150]           // viewport (orgX, orgY, width, height)
+        );
+        this.mMiniCamera3.setBackgroundColor([1, 0, 0, 1]);
+
+        this.mMiniCamera4 = new engine.Camera(
+            vec2.fromValues(35, 50), // position of the camera
+            6,                       // width of camera
+            [550, 625, 150, 150]           // viewport (orgX, orgY, width, height)
+        );
+        this.mMiniCamera4.setBackgroundColor([1, 0, 1, 1]);
 
         this.mBrain = new Brain(this.kMinionSprite);
 
@@ -136,16 +157,27 @@ class MyGame extends engine.Scene {
         this.drawPyePacks();
 
         this.mMiniCamera1.setViewAndCameraMatrix();
+        this.mHero.draw(this.mMiniCamera1);
 
+        this.mMiniCamera2.setViewAndCameraMatrix();
+        this.mHero.draw(this.mMiniCamera2);
+
+        this.mMiniCamera3.setViewAndCameraMatrix();
+        this.mHero.draw(this.mMiniCamera3);
+
+        this.mMiniCamera4.setViewAndCameraMatrix();
+        this.mHero.draw(this.mMiniCamera4);
     }
 
     // The update function, updates the application state. Make sure to _NOT_ draw
     // anything from this function!
     update() {
         //Trevor's Code
-
+        this.mMiniCamera1.setWCCenter(this.mHero.mRenderComponent.getXform().getXPos(), this.mHero.mRenderComponent.getXform().getYPos());
+        this.mMiniCamera1.update();
         if(this.mPatrolSpawn) {
             this.mPatrolTimer++;
+            document.write(this.mMiniCamera1.getWCCenter()[0] + " " + this.mMiniCamera1.getWCCenter()[1]);
         }
 
         //Sets patrol spawn
