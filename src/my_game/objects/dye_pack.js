@@ -22,12 +22,12 @@ class DyePack extends engine.GameObject {
     update() {
         let xform = this.getXform();
 
-        if (engine.input.isKeyPressed(engine.input.keys.D)){
-            this.slowDown();
-        }
-        else{
-            this.kDelta = 1;
-        }
+        //if (engine.input.isKeyPressed(engine.input.keys.D)){
+        //    this.slowDown();
+        //}
+        //else{
+        //    this.kDelta = 1;
+        //}
     }
 
     getDelta()

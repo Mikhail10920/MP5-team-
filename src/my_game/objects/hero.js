@@ -39,6 +39,26 @@ class Hero extends engine.GameObject {
         // control by WASD
         let xform = this.getXform();
         
+        //User Input Slowdown
+        if (engine.input.isKeyPressed(engine.input.keys.D)){
+            for (let i = 0; i < this.dyePacks.length; i++){
+                this.dyePacks[i].slowDown();
+                if (this.dyePacks[i].kDelta <= 0){
+                    //Move everything in front of dyePacks[i] back one space
+                    for (let j = i; j < this.dyePacks.length-1; j++){
+                        this.dyePacks[j] = this.dyePacks[j + 1];
+                    }
+                    //Delete last member of dyePacks
+                    delete(this.dyePacks[this.dyePacks.length - 1]);
+                }
+            }
+        }
+        else{
+            for (let i = 0; i < this.dyePacks.length; i++){
+                this.dyePacks[i].kDelta = 1; 
+            }
+        }
+
         //Collision-based SlowDown
     }
 
