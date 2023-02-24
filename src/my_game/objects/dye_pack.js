@@ -36,18 +36,6 @@ class DyePack extends engine.GameObject {
     }
 
     slowDown(){
-        this.dyePackSpeed -= 0.1;
-    }
-
-    slowDown(){
-        this.kDelta -= 0.1;
-    }
-
-    hit(){
-        
-    }
-
-    slowDown(){
         this.kDelta -= 0.1;
     }
 
