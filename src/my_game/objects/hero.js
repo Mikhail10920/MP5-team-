@@ -34,6 +34,9 @@ class Hero extends engine.GameObject {
         this.framesLimeint = false; 
 
         this.dyePacks = new DyePackSet();
+
+        this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
+        this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
     }
 
     update() {
@@ -65,6 +68,18 @@ class Hero extends engine.GameObject {
                 //Delete last member of dyePacks
                 //delete(this.dyePacks[this.dyePacks.length - 1]);
             }
+        }
+
+        this.oscsalateHeroUpdate();
+
+    }
+
+    oscsalateHeroUpdate() {
+        if (!this.oscillateW.done()) {
+            let width = this.oscillateW.getNextForAmpl();
+            let hight = this.oscillateW.getNextForAmpl();
+
+            this.mRenderComponent.getXform().setSize(width, hight);
         }
     }
 
@@ -101,35 +116,9 @@ class Hero extends engine.GameObject {
     }
 
     async oscsalateHero() {
-        if(!this.oscsalateActive) {
-            this.oscsalateActive = true;
-            let curernt = new Date();
-            this.endTime = curernt.getTime() + this.duration;
-            this.time = curernt.getTime();
-            //console.log(this.time);
-            //console.log(this.endTime);
-
-            //let i = 0;
-            //while(this.time < this.endTime) 
-
-            for(let i = 0; i < this.duration; i++) {
-            //await frameCounter();
-            //this.requestAnimFrame();
-            //await requestFrameCount(this.framesLimeint);
-            //console.log(this.framesLimeint);
-            //while(this.framesLimeint)  {
-                this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
-                await sleep(this.frequency);
-                this.mRenderComponent.getXform().setSize(9, 12);
-                await sleep(this.frequency);
-/*                 curernt = new Date();
-                this.time = curernt.getTime();
-                */
-                console.log("BBBBBB"); 
-            }
-            this.oscsalateActive = false;
-        }
-    }    
+        this.oscillateW.reStart();
+        this.oscillateH.reStart();
+    }  
 
     createAByePack(sprite) {
         let dyePack = new DyePack(sprite);
