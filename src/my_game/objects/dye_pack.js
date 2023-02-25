@@ -10,7 +10,7 @@ class DyePack extends engine.GameObject {
         this.kTime = 0;
         this.kRefWidth = 80;
         this.kRefHeight = 130;
-        this.kDelta = 1;
+        this.kDelta = 2;
 
         this.frequency = 20;
         this.duration = 0;
