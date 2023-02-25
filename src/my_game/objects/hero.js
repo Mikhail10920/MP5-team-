@@ -2,6 +2,7 @@
 
 import engine from "../../engine/index.js";
 import DyePack from "./dye_pack.js";
+import DyePackSet from "./dye_pack_set.js";
 
 class Hero extends engine.GameObject {
     constructor(spriteTexture) {
@@ -32,7 +33,7 @@ class Hero extends engine.GameObject {
         this.framemes = 0;
         this.framesLimeint = false; 
 
-        this.dyePacks = [];
+        this.dyePacks = new DyePackSet();
     }
 
     update() {
@@ -41,37 +42,38 @@ class Hero extends engine.GameObject {
         
         //User Input DyePack Slowdown
         if (engine.input.isKeyPressed(engine.input.keys.D)){
-            for (let i = 0; i < this.dyePacks.length; i++){
+            for (let i = 0; i < this.dyePacks.size(); i++){
                 this.dyePackSlowdown(i);
             }
         }
 
         //User Input DyePack Hit
         if (engine.input.isKeyClicked(engine.input.keys.S)){
-            for (let i = 0; i < this.dyePacks.length; i++){
+            for (let i = 0; i < this.dyePacks.size(); i++){
                 this.dyePackHit(i);
             }
         }
 
         //DyePack Termination: Slowdown
-        for (let i = 0; i < this.dyePacks.length; i++){
-            if (this.dyePacks[i].kDelta <= .1){
+        for (let i = 0; i < this.dyePacks.size(); i++){
+            if (this.dyePacks.getObjectAt(i).kDelta <= .1){
+                this.dyePacks.removeFromSet(this.dyePacks.getObjectAt(i));
                 //Move everything in front of dyePacks[i] back one space
-                for (let j = i; j < this.dyePacks.length-1; j++){
-                    this.dyePacks[j] = this.dyePacks[j + 1];
-                }
+                //for (let j = i; j < this.dyePacks.size()-1; j++){
+                //    this.dyePacks[j] = this.dyePacks[j + 1];
+                //}
                 //Delete last member of dyePacks
-                delete(this.dyePacks[this.dyePacks.length - 1]);
+                //delete(this.dyePacks[this.dyePacks.length - 1]);
             }
         }
     }
 
     dyePackSlowdown(index){
-        this.dyePacks[index].slowDown();
+        this.dyePacks.getObjectAt(index).slowDown();
     }
 
     dyePackHit(index){
-        this.dyePacks[index].hit();
+        this.dyePacks.getObjectAt(index).hit();
     }
 
     moveHeroToMousePos(x,y) {
@@ -138,16 +140,16 @@ class Hero extends engine.GameObject {
         xform.setXPos(pos[0]);
         xform.setYPos(pos[1]);
         let speed = 1;
-        this.dyePacks.push(dyePack);
+        this.dyePacks.addToSet(dyePack);
     }
 
     drawPyePacks(camera) {
         //console.log(this.dyePacks);
-        for(let i = 0; i < this.dyePacks.length; i++) {
-            this.dyePacks[i].draw(camera);
+        for(let i = 0; i < this.dyePacks.size(); i++) {
+            this.dyePacks.getObjectAt(i).draw(camera);
             //let xpos = this.mHero.dyePacks[i].getXform();
             //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
-            this.dyePacks[i].getXform().incXPosBy(this.dyePacks[i].kDelta);
+            this.dyePacks.getObjectAt(i).getXform().incXPosBy(this.dyePacks.getObjectAt(i).kDelta);
         }
     }
 

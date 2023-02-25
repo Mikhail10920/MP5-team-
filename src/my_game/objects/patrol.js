@@ -215,8 +215,8 @@ class Patrol extends engine.GameObject {
             this.mHeroTimer = 60;
         }
 
-        for(i = 0; i < this.mCollide.dyePacks.length; i++) {
-            if (this.mHead.pixelTouches(this.mCollide.dyePacks[i], h)) {
+        for(i = 0; i < this.mCollide.dyePacks.size(); i++) {
+            if (this.mHead.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
                     this.mOffset += 5;
                     this.mHead.getXform().incXPosBy(this.mOffset);
@@ -225,10 +225,10 @@ class Patrol extends engine.GameObject {
                     this.mIsHit = true;
                     this.mIndexOfDye = i;
                 }
-                this.mCollide.dyePacks[i].slowDown();
+                this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
 
-            if (this.mWingTop.pixelTouches(this.mCollide.dyePacks[i], h)) {
+            if (this.mWingTop.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
                     this.mWingTop.mRenderComponent.setColor(
                         [this.mWingTop.mRenderComponent.getColor()[0],
@@ -240,10 +240,10 @@ class Patrol extends engine.GameObject {
                         this.mIsHit = true;
                         this.mIndexOfDye = i;
                 }
-                this.mCollide.dyePacks[i].slowDown();
+                this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
 
-            if (this.mWingBot.pixelTouches(this.mCollide.dyePacks[i], h)) {
+            if (this.mWingBot.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
                     this.mWingBot.mRenderComponent.setColor(
                         [this.mWingBot.mRenderComponent.getColor()[0],
@@ -255,7 +255,7 @@ class Patrol extends engine.GameObject {
                         this.mIsHit = true;
                         this.mIndexOfDye = i;
                 }
-                this.mCollide.dyePacks[i].slowDown();
+                this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
         }
     }
