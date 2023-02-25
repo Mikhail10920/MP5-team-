@@ -20,22 +20,14 @@ class DyePack extends engine.GameObject {
     }
 
     update() {
-        this.kTime += 1; //keep track of the time active by frames updated
+        let xform = this.getXform();
 
-        if (engine.input.isKeyPressed(engine.input.keys.D)){
-            this.slowDown();
-        }
-        else{
-            this.dyePackSpeed = 1;
-        }
-
-        if (this.isVisible()) {
-            xform.incYPosBy(-this.kDelta);
-        }
-
-        if (this. >= kTime + 360){
-            delete(this);
-        }
+        //if (engine.input.isKeyPressed(engine.input.keys.D)){
+        //    this.slowDown();
+        //}
+        //else{
+        //    this.kDelta = 1;
+        //}
     }
 
     getDelta()
@@ -44,7 +36,11 @@ class DyePack extends engine.GameObject {
     }
 
     slowDown(){
-        this.dyePackSpeed -= 0.1;
+        this.kDelta -= 0.1;
+    }
+
+    hit(){
+        console.log("Hit");
     }
 }
 
