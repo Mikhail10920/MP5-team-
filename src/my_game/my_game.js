@@ -150,6 +150,14 @@ class MyGame extends engine.Scene {
             this.mHero.oscsalateHero();
         }
 
+        //DyePack Collide With Patrol
+        for (let i = 0; i < this.mHero.dyePacks.length; i++){
+            if (this.mHero.dyePacks[i].pixelTouches(this.mPortal, h)){
+                this.mHero.dyePackHit(i);
+                this.mHero.dyePackSlowdown(i);
+            }
+        }
+
         // decide which to collide
         if (engine.input.isKeyClicked(engine.input.keys.L)) {
             this.mCollide = this.mLMinion;

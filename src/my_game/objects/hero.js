@@ -39,27 +39,39 @@ class Hero extends engine.GameObject {
         // control by WASD
         let xform = this.getXform();
         
-        //User Input Slowdown
+        //User Input DyePack Slowdown
         if (engine.input.isKeyPressed(engine.input.keys.D)){
             for (let i = 0; i < this.dyePacks.length; i++){
-                this.dyePacks[i].slowDown();
-                if (this.dyePacks[i].kDelta <= 0){
-                    //Move everything in front of dyePacks[i] back one space
-                    for (let j = i; j < this.dyePacks.length-1; j++){
-                        this.dyePacks[j] = this.dyePacks[j + 1];
-                    }
-                    //Delete last member of dyePacks
-                    delete(this.dyePacks[this.dyePacks.length - 1]);
-                }
-            }
-        }
-        else{
-            for (let i = 0; i < this.dyePacks.length; i++){
-                this.dyePacks[i].kDelta = 1; 
+                this.dyePackSlowdown(i);
             }
         }
 
-        //Collision-based SlowDown
+        //User Input DyePack Hit
+        if (engine.input.isKeyClicked(engine.input.keys.S)){
+            for (let i = 0; i < this.dyePacks.length; i++){
+                this.dyePackHit(i);
+            }
+        }
+
+        //DyePack Termination: Slowdown
+        for (let i = 0; i < this.dyePacks.length; i++){
+            if (this.dyePacks[i].kDelta <= 0){
+                //Move everything in front of dyePacks[i] back one space
+                for (let j = i; j < this.dyePacks.length-1; j++){
+                    this.dyePacks[j] = this.dyePacks[j + 1];
+                }
+                //Delete last member of dyePacks
+                delete(this.dyePacks[this.dyePacks.length - 1]);
+            }
+        }
+    }
+
+    dyePackSlowdown(index){
+        this.dyePacks[index].slowDown();
+    }
+
+    dyePackHit(index){
+        this.dyePacks[index].hit();
     }
 
     moveHeroToMousePos(x,y) {
@@ -143,8 +155,6 @@ class Hero extends engine.GameObject {
         }
     }
 
-}
-
 /* async function frameCounter() {
     this.framemes = 0;
     this.framesLimeint = true;
@@ -154,7 +164,7 @@ class Hero extends engine.GameObject {
     this.framesLimeint = false; 
     return 0;
 } */
-
+}
 //Reference: https://www.youtube.com/watch?v=N8ONAZSsx80
 async function sleep(seconds) {
     return new Promise((resolve => setTimeout(resolve, seconds)));

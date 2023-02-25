@@ -40,7 +40,7 @@ class DyePack extends engine.GameObject {
     }
 
     hit(){
-        
+        console.log("Hit");
     }
 }
 
