@@ -12,8 +12,8 @@ class DyePack extends engine.GameObject {
         this.kRefHeight = 130;
         this.kDelta = 1;
 
-        this.frequency = 4;
-        this.duration = 60;
+        this.frequency = 20;
+        this.duration = 0;
 
         this.mRenderComponent = new engine.SpriteRenderable(spriteTexture);
         this.mRenderComponent.setColor([1, 1, 1, 0.1]);
@@ -21,18 +21,18 @@ class DyePack extends engine.GameObject {
         this.mRenderComponent.getXform().setSize(this.kRefWidth / 50, this.kRefHeight / 50);
         this.mRenderComponent.setElementPixelPositions(510, 595, 23, 153);
 
-        this.oscillateW = new engine.Oscillate(1, this.frequency, this.duration);
-        this.oscillateH = new engine.Oscillate(1, this.frequency, this.duration);
+        this.oscillateW = new engine.Oscillate(4, this.frequency, this.duration);
+        this.oscillateH = new engine.Oscillate(0.2, this.frequency, this.duration);
     }
 
     update() {
+        //count frames
         this.kTime++;
-        console.log(this.kTime);
         if (!this.oscillateW.done()) {
             let width = this.oscillateW.getNextForAmpl();
-            let hight = this.oscillateW.getNextForAmpl();
+            let height = this.oscillateH.getNextForAmpl();
 
-            this.mRenderComponent.getXform().setSize(width, hight);
+            this.mRenderComponent.getXform().setSize(width, height);
         }
     }
 
@@ -54,6 +54,11 @@ class DyePack extends engine.GameObject {
     
     hit(){
         console.log("Hit");
+        this.duration = 300;
+
+        this.oscillateW.changeDuration(this.duration);
+        this.oscillateH.changeDuration(this.duration);
+        
         this.oscillateW.reStart();
         this.oscillateH.reStart();
     }
