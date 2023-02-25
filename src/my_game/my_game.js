@@ -10,12 +10,14 @@ import DyePack from "./objects/dye_pack.js";
 import TextureObject from "./objects/texture_object.js";
 import Patrol from "./objects/patrol.js";
 import PatrolSet from "./objects/patrol_set.js";
+import EC from "./objects/ec.js";
 
 class MyGame extends engine.Scene {
     constructor() {
         super();
         this.kMinionSprite = "assets/minion_sprite.png";
         this.kMinionPortal = "assets/minion_portal.png";
+        this.kExtraCredit = "assets/extra.png";
 
         //Background
         this.mBackground = null;
@@ -59,16 +61,22 @@ class MyGame extends engine.Scene {
 
         this.mToggleCamera4 = false;
         this.mCamera4Follow = null;
+
+        //Extra credit
+        this.mEC = null;
+        this.mToggleEC = false;
     }
 
     load() {
         engine.texture.load(this.kMinionSprite);
         engine.texture.load(this.kMinionPortal);
+        engine.texture.load(this.kExtraCredit);
     }
 
     unload() {
         engine.texture.unload(this.kMinionSprite);
         engine.texture.unload(this.kMinionPortal);
+        engine.texture.unload(this.kExtraCredit);
     }
 
     init() {
@@ -127,6 +135,8 @@ class MyGame extends engine.Scene {
         this.mMsg.setTextHeight(3.5);
 
         this.mCollide = this.mHero;
+
+        this.mEC = new EC(this.kExtraCredit, 100, 50, 50, 50);
     }
 
     // This is the draw function, make sure to setup proper drawing environment, and more
@@ -141,6 +151,10 @@ class MyGame extends engine.Scene {
         // Step  C: Draw everything
         this.mHero.draw(this.mCamera);
         this.mMsg.draw(this.mCamera);
+
+        if(this.mToggleEC) {
+            this.mEC.draw(this.mCamera);
+        }
 
         //Draws all patrols in patrol set
         let i;
@@ -209,6 +223,10 @@ class MyGame extends engine.Scene {
             this.mToggleCamera4 = !this.mToggleCamera4;
         }
 
+        if(engine.input.isKeyClicked(engine.input.keys.U)) {
+            this.mToggleEC = !this.mToggleEC;
+        }   
+
         //Toggle boundary AND check for hit event
         for(let i = 0; i < this.mPatrolSet.size(); i++) {
             this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
@@ -255,6 +273,10 @@ class MyGame extends engine.Scene {
         }
 
         //End of Trevor's Code
+        let ECArray = [];
+        if(this.mHero.pixelTouches(this.mEC, ECArray)) {
+            
+        }
 
         //Message output
         let msg = "Patrol Spawned Total: " + this.mPatrolTotal + 

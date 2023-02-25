@@ -68,6 +68,9 @@ class Patrol extends engine.GameObject {
         this.mCurrentDirection = null;
         this.mMoveUnit = 0.0;
         this.mMoveRate = 0.0;
+
+        //Hero touching head
+        this.mHeroTimer = 0;
     }
 
     load() {
@@ -150,11 +153,11 @@ class Patrol extends engine.GameObject {
         if(this.showBoundary) {
         //Update overall boundary
         this.mBoundaryLeft.setVertices(this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() - 11, 
-        this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() + 11); 
+        this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() + 17); 
         this.mBoundaryRight.setVertices(this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() - 11, 
-        this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() + 11); 
-        this.mBoundaryTop.setVertices(this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() + 11, 
-        this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() + 11); 
+        this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() + 17); 
+        this.mBoundaryTop.setVertices(this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() + 17, 
+        this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() + 17); 
         this.mBoundaryBot.setVertices(this.mHead.getXform().getXPos() - 2.75, this.mHead.getXform().getYPos() - 11, 
         this.mHead.getXform().getXPos() + 15 - this.mOffset, this.mHead.getXform().getYPos() - 11); 
 
@@ -208,8 +211,14 @@ class Patrol extends engine.GameObject {
         let i;
         let h = []; 
         this.mInvFrame += 1;
+        this.mHeroTimer--;
         if(this.mInvFrame == 15) {
             this.mRecentHit = false;
+        }
+
+        if(this.mCollide.pixelTouches(this.mHead, h) && (this.mHeroTimer < 0)) {
+            this.mCollide.oscsalateHero();
+            this.mHeroTimer = 60;
         }
 
         for(i = 0; i < this.mCollide.dyePacks.length; i++) {
@@ -229,7 +238,7 @@ class Patrol extends engine.GameObject {
                         [this.mWingTop.mRenderComponent.getColor()[0],
                         this.mWingTop.mRenderComponent.getColor()[1],
                         this.mWingTop.mRenderComponent.getColor()[2],
-                        this.mWingTop.mRenderComponent.getColor()[3] + .3]);
+                        this.mWingTop.mRenderComponent.getColor()[3] + .2]);
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
                         this.mIsHit = true;
@@ -245,7 +254,7 @@ class Patrol extends engine.GameObject {
                         [this.mWingBot.mRenderComponent.getColor()[0],
                         this.mWingBot.mRenderComponent.getColor()[1],
                         this.mWingBot.mRenderComponent.getColor()[2],
-                        this.mWingBot.mRenderComponent.getColor()[3] + .3]);
+                        this.mWingBot.mRenderComponent.getColor()[3] + .2]);
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
                         this.mIsHit = true;
