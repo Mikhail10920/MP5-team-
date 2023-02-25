@@ -30,6 +30,7 @@ class DyePack extends engine.GameObject {
     }
 
     slowDown(){
+        console.log(this.kDelta);
         if(this.kDelta >= 0.1) {
             this.kDelta -= 0.1;
         }

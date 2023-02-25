@@ -53,6 +53,7 @@ class MyGame extends engine.Scene {
         this.mToggleCamera1 = false;
         this.mCamera1Follow = null;
 
+        //Dyepack camera
         this.mToggleCamera2 = false;
         this.mCamera2Follow = null;
 
@@ -61,6 +62,8 @@ class MyGame extends engine.Scene {
 
         this.mToggleCamera4 = false;
         this.mCamera4Follow = null;
+
+        this.mDyeFollow = [-1, -1, -1];
 
         //Extra credit
         this.mEC = null;
@@ -167,21 +170,25 @@ class MyGame extends engine.Scene {
         if(this.mToggleCamera1) {
             this.mMiniCamera1.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera1);
+            this.mHero.dyePacks.draw(this.mMiniCamera1);
         }
 
         if(this.mToggleCamera2) {
             this.mMiniCamera2.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera2);
+            this.mHero.dyePacks.draw(this.mMiniCamera2);
         }
 
         if(this.mToggleCamera3) {
             this.mMiniCamera3.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera3);
+            this.mHero.dyePacks.draw(this.mMiniCamera3);
         }
 
         if(this.mToggleCamera4) {
             this.mMiniCamera4.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera4);
+            this.mHero.dyePacks.draw(this.mMiniCamera4);
         }
     }
 
@@ -227,13 +234,41 @@ class MyGame extends engine.Scene {
             this.mToggleEC = !this.mToggleEC;
         }   
 
-        //Toggle boundary AND check for hit event
-        for(let i = 0; i < this.mPatrolSet.size(); i++) {
-            this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
-
-            if(this.mPatrolSet.getObjectAt(i).mIsHit) {
-
+        if(this.mDyeFollow[0] != -1) {
+            if(this.mHero.dyePacks.getObjectAt(this.mDyeFollow[0]).kDelta <= .1) {
+                this.mToggleCamera2 = false;
+                this.mDyeFollow[0] = -1;
             }
+        } else if(this.mDyeFollow[1] != -1) {
+            if(this.mHero.dyePacks.getObjectAt(this.mDyeFollow[1]).kDelta <= .1) {
+                this.mToggleCamera3 = false;
+                this.mDyeFollow[1] = -1;
+            }
+        } else if(this.mDyeFollow[2] != -1) {
+            if(this.mHero.dyePacks.getObjectAt(this.mDyeFollow[2]).kDelta <= .1) {
+                this.mToggleCamera4 = false;
+                this.mDyeFollow[2] = -1;
+            }
+        }
+
+        if(this.mToggleCamera2 && (this.mDyeFollow[0] != -1)) {
+            console.log(this.mDyeFollow[0]);
+            this.mMiniCamera2.setWCCenter(
+            this.mHero.dyePacks.getObjectAt(this.mDyeFollow[0]).mRenderComponent.getXform().getXPos(), 
+            this.mHero.dyePacks.getObjectAt(this.mDyeFollow[0]).mRenderComponent.getXform().getYPos());
+            this.mMiniCamera2.update();
+        } else if(this.mToggleCamera3 && (this.mDyeFollow[1] != -1)) {
+            console.log(this.mDyeFollow[1]);
+            this.mMiniCamera3.setWCCenter(
+                this.mHero.dyePacks.getObjectAt(this.mDyeFollow[1]).mRenderComponent.getXform().getXPos(), 
+                this.mHero.dyePacks.getObjectAt(this.mDyeFollow[1]).mRenderComponent.getXform().getYPos());
+                this.mMiniCamera3.update();
+        } else if(this.mToggleCamera4 && (this.mDyeFollow[2] != -1)) {
+            console.log(this.mDyeFollow[2]);
+            this.mMiniCamera4.setWCCenter(
+                this.mHero.dyePacks.getObjectAt(this.mDyeFollow[2]).mRenderComponent.getXform().getXPos(), 
+                this.mHero.dyePacks.getObjectAt(this.mDyeFollow[2]).mRenderComponent.getXform().getYPos());
+                this.mMiniCamera4.update();
         }
 
         //Force spawns a patrol
@@ -263,8 +298,6 @@ class MyGame extends engine.Scene {
             this.mPatrolTotal++;
         }
 
-        this.mPatrolSet.update();
-
         //Constantly checks to delete any patrols that meets the requirements.
         for(let i = 0; i < this.mPatrolSet.size(); i++) {
             if(this.mPatrolSet.getObjectAt(i).mCanDelete == true) {
@@ -272,12 +305,29 @@ class MyGame extends engine.Scene {
             }
         }
 
-        //End of Trevor's Code
-        let ECArray = [];
-        if(this.mHero.pixelTouches(this.mEC, ECArray)) {
+        //Toggle boundary AND check for hit event
+        for(let i = 0; i < this.mPatrolSet.size(); i++) {
+            this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
 
+            if(this.mPatrolSet.getObjectAt(i).mIsHit) {
+                if(this.mDyeFollow[0] == -1) {
+                    this.mDyeFollow[0] = this.mPatrolSet.getObjectAt(i).mIndexOfDye;
+                    this.mToggleCamera2 = true;
+                } else if(this.mDyeFollow[1] == -1) {
+                    this.mDyeFollow[1] = this.mPatrolSet.getObjectAt(i).mIndexOfDye;
+                    this.mToggleCamera3 = true;
+                } else if(this.mDyeFollow[2] == -1) {
+                    this.mDyeFollow[2] = this.mPatrolSet.getObjectAt(i).mIndexOfDye;
+                    this.mToggleCamera4 = true;
+                }
+            }
         }
 
+        this.mPatrolSet.update();
+
+        //End of Trevor's Code
+        let ECArray = [];
+        
         //Message output
         let msg = "Patrol Spawned Total: " + this.mPatrolTotal + 
         " Dyepack Spawned Total: " + this.mDyePackTotal + 

@@ -208,6 +208,7 @@ class Patrol extends engine.GameObject {
         this.mHeroTimer--;
         if(this.mInvFrame == 15) {
             this.mRecentHit = false;
+            this.mIndexOfDye = -1;
         }
 
         if(this.mCollide.pixelTouches(this.mHead, h) && (this.mHeroTimer < 0)) {
