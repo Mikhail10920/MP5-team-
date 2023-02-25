@@ -8,8 +8,6 @@ import Brain from "./brain.js";
 import Minion from "./minion.js";
 import TextureObject from "./texture_object.js";
 
-
-
 class Patrol extends engine.GameObject {
     constructor(hero, spriteTexture, spriteTextureHead, atX, atY) {
         super(null);
@@ -203,10 +201,6 @@ class Patrol extends engine.GameObject {
         this.validDeletion();
     }
 
-    isDead() {
-        
-    }
-
     checkForColisions() {
         let i;
         let h = []; 
@@ -222,18 +216,20 @@ class Patrol extends engine.GameObject {
         }
 
         for(i = 0; i < this.mCollide.dyePacks.length; i++) {
-            if (this.mHead.pixelTouches(this.mCollide.dyePacks[i], h) && !this.mRecentHit) {
-                this.mOffset += 5;
-                this.mHead.getXform().incXPosBy(this.mOffset);
-                this.mRecentHit = true;
-                this.mInvFrame = 0;
-                this.mIsHit = true;
-                this.mIndexOfDye = i;
+            if (this.mHead.pixelTouches(this.mCollide.dyePacks[i], h)) {
+                if(!this.mRecentHit) {
+                    this.mOffset += 5;
+                    this.mHead.getXform().incXPosBy(this.mOffset);
+                    this.mRecentHit = true;
+                    this.mInvFrame = 0;
+                    this.mIsHit = true;
+                    this.mIndexOfDye = i;
+                }
+                this.mCollide.dyePacks[i].slowDown();
             }
-            if (this.mWingTop.pixelTouches(this.mCollide.dyePacks[i], h) && !this.mRecentHit) {
-                if(this.mWingTop.mRenderComponent.getColor()[3] >= 1) {
 
-                } else {
+            if (this.mWingTop.pixelTouches(this.mCollide.dyePacks[i], h)) {
+                if(!this.mRecentHit) {
                     this.mWingTop.mRenderComponent.setColor(
                         [this.mWingTop.mRenderComponent.getColor()[0],
                         this.mWingTop.mRenderComponent.getColor()[1],
@@ -244,12 +240,11 @@ class Patrol extends engine.GameObject {
                         this.mIsHit = true;
                         this.mIndexOfDye = i;
                 }
+                this.mCollide.dyePacks[i].slowDown();
             }
 
-            if (this.mWingBot.pixelTouches(this.mCollide.dyePacks[i], h) && !this.mRecentHit) {
-                if(this.mWingBot.mRenderComponent.getColor()[3] >= 1) {
-
-                } else {
+            if (this.mWingBot.pixelTouches(this.mCollide.dyePacks[i], h)) {
+                if(!this.mRecentHit) {
                     this.mWingBot.mRenderComponent.setColor(
                         [this.mWingBot.mRenderComponent.getColor()[0],
                         this.mWingBot.mRenderComponent.getColor()[1],
@@ -260,6 +255,7 @@ class Patrol extends engine.GameObject {
                         this.mIsHit = true;
                         this.mIndexOfDye = i;
                 }
+                this.mCollide.dyePacks[i].slowDown();
             }
         }
     }

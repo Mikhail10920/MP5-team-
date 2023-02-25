@@ -162,7 +162,7 @@ class MyGame extends engine.Scene {
             this.mPatrolSet.getObjectAt(i).draw(this.mCamera);
         }
 
-        this.drawPyePacks();
+        this.mHero.drawPyePacks(this.mCamera);
 
         if(this.mToggleCamera1) {
             this.mMiniCamera1.setViewAndCameraMatrix();
@@ -275,7 +275,7 @@ class MyGame extends engine.Scene {
         //End of Trevor's Code
         let ECArray = [];
         if(this.mHero.pixelTouches(this.mEC, ECArray)) {
-            
+
         }
 
         //Message output
@@ -321,15 +321,6 @@ class MyGame extends engine.Scene {
 
         for(let i = 0; i < this.mHero.dyePacks.length;i++) {
             if (this.mHero.dyePacks[i]);
-        }
-    }
-
-    drawPyePacks() {
-        for(let i = 0; i < this.mHero.dyePacks.length;i++) {
-            this.mHero.dyePacks[i].draw(this.mCamera);
-            //let xpos = this.mHero.dyePacks[i].getXform();
-            //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
-            this.mHero.dyePacks[i].getXform().incXPosBy(this.mHero.dyePackSpeed);
         }
     }
 

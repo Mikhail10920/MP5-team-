@@ -1,7 +1,6 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 import engine from "../../engine/index.js";
-import Lerp from "../../engine/utils/lerp.js";
 import DyePack from "./dye_pack.js";
 
 class Hero extends engine.GameObject {
@@ -34,35 +33,45 @@ class Hero extends engine.GameObject {
         this.framesLimeint = false; 
 
         this.dyePacks = [];
-        this.dyePackSpeed = 1;
-
-        this.oscillateW = null;//new Lerp();
-        this.oscillateH = null;//new Lerp();
-
-        this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
-        this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
-
     }
 
     update() {
+        // control by WASD
+        let xform = this.getXform();
+        
+        //User Input DyePack Slowdown
         if (engine.input.isKeyPressed(engine.input.keys.D)){
-            this.slowDown();
-        }
-        else{
-            this.dyePackSpeed = 1;
+            for (let i = 0; i < this.dyePacks.length; i++){
+                this.dyePackSlowdown(i);
+            }
         }
 
-
-        if (engine.input.isKeyClicked(engine.input.keys.E)){
-            //this.oscillateW.reStart();
-            //this.oscillateH.reStart();
+        //User Input DyePack Hit
+        if (engine.input.isKeyClicked(engine.input.keys.S)){
+            for (let i = 0; i < this.dyePacks.length; i++){
+                this.dyePackHit(i);
+            }
         }
-        if (!this.oscillateW.done()) {
-            let width = this.oscillateW.getNextForAmpl();
-            let hight = this.oscillateW.getNextForAmpl();
 
-            this.mRenderComponent.getXform().setSize(width, hight);
+        //DyePack Termination: Slowdown
+        for (let i = 0; i < this.dyePacks.length; i++){
+            if (this.dyePacks[i].kDelta <= .1){
+                //Move everything in front of dyePacks[i] back one space
+                for (let j = i; j < this.dyePacks.length-1; j++){
+                    this.dyePacks[j] = this.dyePacks[j + 1];
+                }
+                //Delete last member of dyePacks
+                delete(this.dyePacks[this.dyePacks.length - 1]);
+            }
         }
+    }
+
+    dyePackSlowdown(index){
+        this.dyePacks[index].slowDown();
+    }
+
+    dyePackHit(index){
+        this.dyePacks[index].hit();
     }
 
     moveHeroToMousePos(x,y) {
@@ -90,59 +99,37 @@ class Hero extends engine.GameObject {
     }
 
     async oscsalateHero() {
-        this.oscillateW.reStart();
-        this.oscillateH.reStart();
-
-/*         if(!this.oscsalateActive) {
-
-            this.oscillateW.reStart();
-            this.oscillateH.reStart();
-
+        if(!this.oscsalateActive) {
             this.oscsalateActive = true;
             let curernt = new Date();
             this.endTime = curernt.getTime() + this.duration;
-            this.time = curernt.getTime(); */
+            this.time = curernt.getTime();
             //console.log(this.time);
             //console.log(this.endTime);
 
             //let i = 0;
             //while(this.time < this.endTime) 
 
-
-            //this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
-
-
-
-/* 
             for(let i = 0; i < this.duration; i++) {
-
-                let width = this.oscillateW.getNextForAmpl();
-                console.log(width);
-    
-                //console.log(this.oscillate);q
             //await frameCounter();
             //this.requestAnimFrame();
             //await requestFrameCount(this.framesLimeint);
             //console.log(this.framesLimeint);
             //while(this.framesLimeint)  {
-                //this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
-                //this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
-                //await sleep(this.frequency);
+                this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
+                await sleep(this.frequency);
                 this.mRenderComponent.getXform().setSize(9, 12);
-                //await sleep(this.frequency); 
+                await sleep(this.frequency);
 /*                 curernt = new Date();
                 this.time = curernt.getTime();
                 */
-                //console.log("BBBBBB"); 
-            //}
-            //this.oscsalateActive = false;
- 
-            
-        //}
+                console.log("BBBBBB"); 
+            }
+            this.oscsalateActive = false;
+        }
     }    
 
     createAByePack(sprite) {
-        console.log("aaaaa");
         let dyePack = new DyePack(sprite);
         dyePack.setVisibility(true);
         let xform = dyePack.getXform();
@@ -152,16 +139,17 @@ class Hero extends engine.GameObject {
         xform.setYPos(pos[1]);
         let speed = 1;
         this.dyePacks.push(dyePack);
-/*         while (true) {
-            xform.incXPosBy(speed);
-        } */
     }
 
-    slowDown(){
-        this.dyePackSpeed -= 0.1;
+    drawPyePacks(camera) {
+        //console.log(this.dyePacks);
+        for(let i = 0; i < this.dyePacks.length; i++) {
+            this.dyePacks[i].draw(camera);
+            //let xpos = this.mHero.dyePacks[i].getXform();
+            //this.xpos.incXPosBy(this.mHero.dyePackSpeed);
+            this.dyePacks[i].getXform().incXPosBy(this.dyePacks[i].kDelta);
+        }
     }
-
-}
 
 /* async function frameCounter() {
     this.framemes = 0;
@@ -172,7 +160,7 @@ class Hero extends engine.GameObject {
     this.framesLimeint = false; 
     return 0;
 } */
-
+}
 //Reference: https://www.youtube.com/watch?v=N8ONAZSsx80
 async function sleep(seconds) {
     return new Promise((resolve => setTimeout(resolve, seconds)));
@@ -184,11 +172,7 @@ async function requestFrameCount(framesLimeint) {
 /*     let curent = new Date();
     let time = curent.getTime();
     let cerentTime = curent.getTime();
-
     while(cerentTime < time + 60) {
-
-
-
     } */
 
 
