@@ -43,6 +43,10 @@ class Hero extends engine.GameObject {
         // control by WASD
         let xform = this.getXform();
         
+        for (let i = 0; i < this.dyePacks.size(); i++){
+            this.dyePacks.getObjectAt(i).update();  
+        }
+
         //User Input DyePack Slowdown
         if (engine.input.isKeyPressed(engine.input.keys.D)){
             for (let i = 0; i < this.dyePacks.size(); i++){
@@ -67,6 +71,13 @@ class Hero extends engine.GameObject {
                 //}
                 //Delete last member of dyePacks
                 //delete(this.dyePacks[this.dyePacks.length - 1]);
+            }
+        }
+
+        //DyePack Termination: Time
+        for (let i = 0; i < this.dyePacks.size(); i++){
+            if (this.dyePacks.getObjectAt(i).getTime() >= 360){
+                this.dyePacks.removeFromSet(this.dyePacks.getObjectAt(i));
             }
         }
 
