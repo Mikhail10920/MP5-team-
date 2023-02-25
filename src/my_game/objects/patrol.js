@@ -219,6 +219,9 @@ class Patrol extends engine.GameObject {
         for(i = 0; i < this.mCollide.dyePacks.size(); i++) {
             if (this.mHead.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
+                    //Oscillate DyePack object
+                    this.mCollide.dyePacks.getObjectAt(i).hit();
+
                     this.mOffset += 5;
                     this.mHead.getXform().incXPosBy(this.mOffset);
                     this.mRecentHit = true;
@@ -231,6 +234,9 @@ class Patrol extends engine.GameObject {
 
             if (this.mWingTop.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
+                    //Oscillate DyePack Object
+                    this.mCollide.dyePacks.getObjectAt(i).hit();
+
                     this.mWingTop.mRenderComponent.setColor(
                         [this.mWingTop.mRenderComponent.getColor()[0],
                         this.mWingTop.mRenderComponent.getColor()[1],
@@ -246,6 +252,9 @@ class Patrol extends engine.GameObject {
 
             if (this.mWingBot.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
                 if(!this.mRecentHit) {
+                    //Oscillate DyePack Object
+                    this.mCollide.dyePacks.getObjectAt(i).hit();
+
                     this.mWingBot.mRenderComponent.setColor(
                         [this.mWingBot.mRenderComponent.getColor()[0],
                         this.mWingBot.mRenderComponent.getColor()[1],

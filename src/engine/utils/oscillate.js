@@ -59,6 +59,10 @@ class Oscillate {
         let frac = this.mNumCyclesLeft / this.mCycles;
         return frac * frac * Math.cos((1 - frac) * this.mOmega);
     }
+
+    changeDuration(d){
+        this.mCycles = d;
+    }
 }
 
 export default Oscillate;
