@@ -1,6 +1,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 import engine from "../../engine/index.js";
+import Lerp from "../../engine/utils/lerp.js";
 import DyePack from "./dye_pack.js";
 
 class Hero extends engine.GameObject {
@@ -34,6 +35,13 @@ class Hero extends engine.GameObject {
 
         this.dyePacks = [];
         this.dyePackSpeed = 1;
+
+        this.oscillateW = null;//new Lerp();
+        this.oscillateH = null;//new Lerp();
+
+        this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
+        this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
+
     }
 
     update() {
@@ -42,6 +50,18 @@ class Hero extends engine.GameObject {
         }
         else{
             this.dyePackSpeed = 1;
+        }
+
+
+        if (engine.input.isKeyClicked(engine.input.keys.E)){
+            //this.oscillateW.reStart();
+            //this.oscillateH.reStart();
+        }
+        if (!this.oscillateW.done()) {
+            let width = this.oscillateW.getNextForAmpl();
+            let hight = this.oscillateW.getNextForAmpl();
+
+            this.mRenderComponent.getXform().setSize(width, hight);
         }
     }
 
@@ -70,34 +90,55 @@ class Hero extends engine.GameObject {
     }
 
     async oscsalateHero() {
-        if(!this.oscsalateActive) {
+        this.oscillateW.reStart();
+        this.oscillateH.reStart();
+
+/*         if(!this.oscsalateActive) {
+
+            this.oscillateW.reStart();
+            this.oscillateH.reStart();
+
             this.oscsalateActive = true;
             let curernt = new Date();
             this.endTime = curernt.getTime() + this.duration;
-            this.time = curernt.getTime();
+            this.time = curernt.getTime(); */
             //console.log(this.time);
             //console.log(this.endTime);
 
             //let i = 0;
             //while(this.time < this.endTime) 
 
+
+            //this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
+
+
+
+/* 
             for(let i = 0; i < this.duration; i++) {
+
+                let width = this.oscillateW.getNextForAmpl();
+                console.log(width);
+    
+                //console.log(this.oscillate);q
             //await frameCounter();
             //this.requestAnimFrame();
             //await requestFrameCount(this.framesLimeint);
             //console.log(this.framesLimeint);
             //while(this.framesLimeint)  {
-                this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
-                await sleep(this.frequency);
+                //this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
+                //this.mRenderComponent.getXform().setSize(this.xAmplitude, this.yAmplitude);
+                //await sleep(this.frequency);
                 this.mRenderComponent.getXform().setSize(9, 12);
-                await sleep(this.frequency);
+                //await sleep(this.frequency); 
 /*                 curernt = new Date();
                 this.time = curernt.getTime();
                 */
-                console.log("BBBBBB"); 
-            }
-            this.oscsalateActive = false;
-        }
+                //console.log("BBBBBB"); 
+            //}
+            //this.oscsalateActive = false;
+ 
+            
+        //}
     }    
 
     createAByePack(sprite) {

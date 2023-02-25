@@ -19,6 +19,7 @@ class Oscillate {
         this.mOmega = frequency * 2 * Math.PI; // Converts frequency to radians 
 
         this.mNumCyclesLeft = duration;
+
     }
 
     reStart() {
@@ -36,6 +37,16 @@ class Oscillate {
             v = this._nextValue();
         }
         return (v * this.mMag);
+    }
+
+    getNextForAmpl() {
+        this.mNumCyclesLeft--;
+        let v = 0;
+        if (!this.done()) {
+            v = this._nextValue();
+        }
+
+        return (v * this.mMag) + (this.mMag * 2);
     }
 
     // local/protected methods
