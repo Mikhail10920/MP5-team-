@@ -21,8 +21,8 @@ class DyePack extends engine.GameObject {
         this.mRenderComponent.getXform().setSize(this.kRefWidth / 50, this.kRefHeight / 50);
         this.mRenderComponent.setElementPixelPositions(510, 595, 23, 153);
 
-        this.oscillateW = new engine.Oscillate(4, this.frequency, this.duration);
-        this.oscillateH = new engine.Oscillate(0.2, this.frequency, this.duration);
+        this.oscillateW = new engine.Oscillate(1.5, this.frequency, this.duration);
+        this.oscillateH = new engine.Oscillate(1.5, this.frequency, this.duration);
     }
 
     update() {

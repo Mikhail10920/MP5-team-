@@ -138,8 +138,7 @@ class Hero extends engine.GameObject {
 
         let pos = this.getXform().getPosition();
         xform.setXPos(pos[0]);
-        xform.setYPos(pos[1]);
-        let speed = 1;
+        xform.setYPos(pos[1] + 3);
         this.dyePacks.addToSet(dyePack);
     }
 
