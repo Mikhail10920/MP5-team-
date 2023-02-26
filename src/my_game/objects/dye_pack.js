@@ -28,6 +28,7 @@ class DyePack extends engine.GameObject {
     update() {
         //count frames
         this.kTime++;
+        console.log(this.kTime);
         if (!this.oscillateW.done()) {
             let width = this.oscillateW.getNextForAmpl();
             let height = this.oscillateH.getNextForAmpl();
