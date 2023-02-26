@@ -19,6 +19,7 @@ class Oscillate {
         this.mOmega = frequency * 2 * Math.PI; // Converts frequency to radians 
 
         this.mNumCyclesLeft = duration;
+
     }
 
     reStart() {
@@ -38,6 +39,16 @@ class Oscillate {
         return (v * this.mMag);
     }
 
+    getNextForAmpl() {
+        this.mNumCyclesLeft--;
+        let v = 0;
+        if (!this.done()) {
+            v = this._nextValue();
+        }
+
+        return (v * this.mMag) + (this.mMag * 2);
+    }
+
     // local/protected methods
     _nextValue() {
         return (this._nextDampedHarmonic());
@@ -47,6 +58,10 @@ class Oscillate {
         // computes (Cycles) * cos(  Omega * t )
         let frac = this.mNumCyclesLeft / this.mCycles;
         return frac * frac * Math.cos((1 - frac) * this.mOmega);
+    }
+
+    changeDuration(d){
+        this.mCycles = d;
     }
 }
 

@@ -9,7 +9,7 @@ class Minion extends engine.GameObject {
         this.mRenderComponent = new engine.SpriteAnimateRenderable(spriteTexture);
         this.mRenderComponent.setColor([1, 1, 1, 0]);
         this.mRenderComponent.getXform().setPosition(atX, atY);
-        this.mRenderComponent.getXform().setSize(12, 9.6);
+        this.mRenderComponent.getXform().setSize(10, 8);
         this.mRenderComponent.setSpriteSequence(512, 0,      // first element pixel position: top-left 512 is top of image, 0 is left of image
             204, 164,   // width x height in pixels
             5,          // number of elements in this sequence

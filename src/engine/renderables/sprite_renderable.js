@@ -25,7 +25,9 @@ const eTexCoordArrayIndex = Object.freeze({
 class SpriteRenderable extends TextureRenderable {
     constructor(myTexture) {
         super(myTexture);
+        
         super._setShader(shaderResources.getSpriteShader());
+
         // sprite coordinate
         this.mElmLeft = 0.0;   // bounds of texture coordinate (0 is left, 1 is right)
         this.mElmRight = 1.0;  // 
