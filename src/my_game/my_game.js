@@ -358,8 +358,8 @@ class MyGame extends engine.Scene {
 
         //Message output
         let msg = "Patrol Spawned Total: " + this.mPatrolTotal + 
-        " Dyepack Spawned Total: " + this.mDyePackTotal + 
-        " AutoSpawn: " + this.mPatrolSpawn +
+        " Dyepack Spawned Total: " + this.mHero.dyePacks.size()  + 
+        " AutoSpawn: " + this.mPatrolSet.size() +
         "Mouse X and Y " + this.mouseXPos + " " + this.mouseYPos;
 
         this.mHero.update();
