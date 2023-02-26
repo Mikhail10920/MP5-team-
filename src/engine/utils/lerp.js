@@ -25,6 +25,14 @@ class Lerp {
         this.mCyclesLeft = this.mCycles;     // will trigger interpolation
     }
 
+    setCurentValue(value) {
+        this.mCurrentValue = value;
+    }
+
+    done() {
+        return (this.mCyclesLeft <= 0);
+    }
+
     update() {
         if (this.mCyclesLeft <= 0) {
             return;

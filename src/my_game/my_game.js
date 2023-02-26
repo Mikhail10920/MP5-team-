@@ -372,6 +372,15 @@ class MyGame extends engine.Scene {
         for(let i = 0; i < this.mHero.dyePacks.length;i++) {
             if (this.mHero.dyePacks[i]);
         }
+
+        this.moveHeroToMousePos();
+
+        this.mHero.getVectore(this.mouseXPos, this.mouseYPos);
+
+    }
+
+    moveHeroToMousePos() {
+        this.mHero.lerpMovement(this.mouseXPos, this.mouseYPos);
     }
 
     //https://www.youtube.com/watch?v=P2i11xnrpNI

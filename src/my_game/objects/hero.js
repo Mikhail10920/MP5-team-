@@ -37,6 +37,13 @@ class Hero extends engine.GameObject {
 
         this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
         this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
+
+        this.lerpX = new engine.Lerp(0, 120, 0.01);
+        this.lerpY = new engine.Lerp(0, 120, 0.01);
+
+
+
+        this.moveVec = [0,0];
     }
 
     update() {
@@ -51,6 +58,7 @@ class Hero extends engine.GameObject {
         if (engine.input.isKeyPressed(engine.input.keys.D)){
             for (let i = 0; i < this.dyePacks.size(); i++){
                 this.dyePackSlowdown(i);
+                //console.log("LLLLLLLLLLL");
             }
         }
 
@@ -83,6 +91,58 @@ class Hero extends engine.GameObject {
 
         this.oscsalateHeroUpdate();
 
+        this.lerpStUp(this.moveVec[0], this.moveVec[1]);
+
+        //this.lerpMovement();
+
+    }
+
+    lerpStUp(xMouse, yMouse) {
+/*         if(engine.input.isKeyPressed(engine.input.keys.L)) {
+            this.lerpX.setFinal(xMouse);
+            this.lerpY.setFinal(yMouse);
+        } */
+        sleep(1);
+        this.lerpX.setFinal(xMouse);
+        this.lerpY.setFinal(yMouse);
+        
+
+    }
+
+    lerpMovement(xMouse,yMouse) {
+        let xform = this.getXform();
+        let pos = this.getXform().getXPos();
+
+        //this.lerpX.setCurentValue(pos);
+        //this.lerpX.setFinal(xMouse);
+
+        //console.log(pos);
+/*         if(engine.input.isKeyClicked(engine.input.keys.L)) {
+            this.lerpX.setFinal(3);
+            //console.log("LLLLLLLLLLL");
+        } */
+
+        this.getVectore(xMouse, yMouse);
+        //xform.incXPosBy(this.moveVec[0]);
+        //xform.incYPosBy(this.moveVec[1]);
+
+        //xform.incXPosBy(this.moveVec[0]);
+
+        if(!this.lerpX.done()) {
+
+            this.lerpX.update();
+            var x = this.lerpX.get();
+
+            this.lerpY.update();
+            var y = this.lerpY.get();
+            //let xform = this.getXform();
+            xform.incXPosBy(x);
+            xform.incYPosBy(y);
+            //console.log("LLLLLLLLLLL");
+        }
+        else {
+            //this.lerpX.setFinal(3);
+        }
     }
 
     oscsalateHeroUpdate() {
@@ -106,7 +166,7 @@ class Hero extends engine.GameObject {
         let xform = this.getXform();
         let pos = this.getXform().getPosition();//this.xform().getPosition();
 
-        if(x > pos[0]) {
+/*         if(x > pos[0]) {
             xform.incXPosBy(this.kDelta);
         } 
         else if (x < pos[0]){
@@ -123,7 +183,7 @@ class Hero extends engine.GameObject {
         }
         else{
             xform.incYPosBy(0); 
-        }
+        } */
     }
 
     async oscsalateHero() {
@@ -151,6 +211,26 @@ class Hero extends engine.GameObject {
             this.dyePacks.getObjectAt(i).getXform().incXPosBy(this.dyePacks.getObjectAt(i).kDelta);
         }
     }
+
+
+
+    getVectore(xMouse, yMouse) {
+        let xPos = this.getXform().getXPos();
+        let yPos = this.getXform().getYPos();
+
+        let length = (Math.sqrt(Math.pow((xMouse - xPos), 2) + Math.pow(yMouse - yPos, 2)));
+
+        this.moveVec = [(xMouse - xPos) / length, (yMouse - yPos) / length];
+
+        console.log(this.moveVec);
+    }
+
+
+
+
+
+
+
 
 /* async function frameCounter() {
     this.framemes = 0;
