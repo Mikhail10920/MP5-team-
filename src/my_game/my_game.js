@@ -63,7 +63,7 @@ class MyGame extends engine.Scene {
 
         this.mToggleCamera4 = false;
         this.mCamera4Follow = -1;
-        
+
         this.mToggleOverride2 = false;
         this.mToggleOverride3 = false;
         this.mToggleOverride4 = false;
@@ -173,6 +173,12 @@ class MyGame extends engine.Scene {
 
         this.mHero.drawPyePacks(this.mCamera);
 
+        if(this.mToggleCamera1) {
+            this.mMiniCamera1.setViewAndCameraMatrix();
+            this.mHero.draw(this.mMiniCamera1);
+            this.mHero.dyePacks.draw(this.mMiniCamera1);
+        }
+        
         if(this.mToggleCamera2 || this.mToggleOverride2) {
             this.mMiniCamera2.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera2);
