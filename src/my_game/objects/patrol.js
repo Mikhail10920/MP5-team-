@@ -69,6 +69,14 @@ class Patrol extends engine.GameObject {
 
         //Hero touching head
         this.mHeroTimer = 0;
+
+
+        this.lerpX1 = new engine.Lerp(0, 120, 0.05);
+        this.lerpY1 = new engine.Lerp(0, 120, 0.05);
+
+        this.lerpX2 = new engine.Lerp(0, 120, 0.05);
+        this.lerpY2 = new engine.Lerp(0, 120, 0.05);
+
     }
 
     load() {
@@ -188,11 +196,12 @@ class Patrol extends engine.GameObject {
         this.mWingBot.getXform().getXPos() + 4.25, this.mWingBot.getXform().getYPos() - 3);
         }
 
-        this.mWingTop.getXform().setXPos(this.mHead.getXform().getXPos() + 10 - this.mOffset);
-        this.mWingTop.getXform().setYPos(this.mHead.getXform().getYPos() + 6);
+        //Wings
+        //this.mWingTop.getXform().setXPos(this.mHead.getXform().getXPos() + 10 - this.mOffset);
+        //this.mWingTop.getXform().setYPos(this.mHead.getXform().getYPos() + 6);
 
-        this.mWingBot.getXform().setXPos(this.mHead.getXform().getXPos() + 10 - this.mOffset);
-        this.mWingBot.getXform().setYPos(this.mHead.getXform().getYPos() - 6);
+        //this.mWingBot.getXform().setXPos(this.mHead.getXform().getXPos() + 10 - this.mOffset);
+        //this.mWingBot.getXform().setYPos(this.mHead.getXform().getYPos() - 6);
 
         this.mWingTop.update();
         this.mWingBot.update();
@@ -268,7 +277,78 @@ class Patrol extends engine.GameObject {
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
         }
+
+        this.lerpStUp(this.mHead.getXform().getXPos(), this.mHead.getXform().getYPos());
+        this.lerpMovement(this.mHead.getXform().getXPos(), this.mHead.getXform().getYPos());
     }
+
+
+    lerpStUp(xMouse, yMouse) {
+
+        let xPos = this.mWingTop.getXform().getXPos();
+        let yPos = this.mWingTop.getXform().getYPos();
+
+        this.xDist = (xMouse - xPos);
+        this.yDist = (yMouse - yPos);
+
+        console.log(this.xDist, this.yDist);
+
+
+        this.lerpX1.setCurentValue(this.mWingTop.getXform().getXPos());
+        this.lerpY1.setCurentValue(this.mWingTop.getXform().getYPos());
+
+        this.lerpX1.setFinal(this.xDist + this.mWingTop.getXform().getXPos() + 10);
+        this.lerpY1.setFinal(this.yDist + this.mWingTop.getXform().getYPos() + 6);
+
+
+        
+        let xPos2 = this.mWingBot.getXform().getXPos();
+        let yPos2 = this.mWingBot.getXform().getYPos();
+
+        this.xDist2 = (xMouse - xPos2);
+        this.yDist2 = (yMouse - yPos2);
+
+
+        this.lerpX2.setCurentValue(this.mWingBot.getXform().getXPos());
+        this.lerpY2.setCurentValue(this.mWingBot.getXform().getYPos());
+
+        this.lerpX2.setFinal(this.xDist2 + this.mWingBot.getXform().getXPos() + 10);
+        this.lerpY2.setFinal(this.yDist2 + this.mWingBot.getXform().getYPos() - 6);
+
+    }
+
+    lerpMovement(xMouse,yMouse) {
+        let xform = this.mWingTop.getXform();
+        let xform2 = this.mWingBot.getXform();
+        //let pos = this.getXform().getXPos();
+
+        if(!this.lerpX1.done()) {
+
+            this.lerpX1.update();
+            var x = this.lerpX1.get();
+
+            this.lerpY1.update();
+            var y = this.lerpY1.get();
+
+            xform.setXPos(x);
+            xform.setYPos(y);
+
+        }
+
+        if(!this.lerpX2.done()) {
+
+            this.lerpX2.update();
+            var x2 = this.lerpX2.get();
+
+            this.lerpY2.update();
+            var y2 = this.lerpY2.get();
+
+            xform2.setXPos(x2);
+            xform2.setYPos(y2);
+
+        }
+    }
+
 
     headHitDebug() {
         this.mOffset += 5;

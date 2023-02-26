@@ -38,8 +38,8 @@ class Hero extends engine.GameObject {
         this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
         this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
 
-        this.lerpX = new engine.Lerp(0, 120, 0.1);
-        this.lerpY = new engine.Lerp(0, 120, 0.1);
+        this.lerpX = new engine.Lerp(0, 120, 0.05);
+        this.lerpY = new engine.Lerp(0, 120, 0.05);
 
 
 
@@ -111,35 +111,8 @@ class Hero extends engine.GameObject {
         this.xDist = (xMouse - xPos);
         this.yDist = (yMouse - yPos);
 
+        //console.log(this.xDist, this.yDist);
 
-/*         if(engine.input.isKeyPressed(engine.input.keys.L)) {
-            this.lerpX.setFinal(xMouse);
-            this.lerpY.setFinal(yMouse);
-        } */
-        //sleep(1);
-        //if(engine.input.isKeyPressed(engine.input.keys.L)) {
-        //if(engine.input.isKeyClicked(engine.input.keys.L)) {
-
-/*             let pos = this.getXform().getXPos();
-
-            this.lerpX.setCurentValue(pos[0]);
-            this.lerpY.setCurentValue(pos[1]); */
-            
-            //console.log(xMouse, yMouse);
-
-            //let posX = this.getXform().getXPos();
-            //let posY = this.getXform().getYPos();
-            //console.log(pos);
-
-            //this.lerpX.setCurentValue(posX);
-            //this.lerpY.setCurentValue(posY);
-            //this.getVectore(xMouse, yMouse);
-
-            //console.log(this.xDist, this.yDist);
-            console.log(this.xDist, this.yDist);
-
-            //this.lerpX.setFinal(this.xDist * 150);
-            //this.lerpY.setFinal(this.yDist * 150);
 
         this.lerpX.setCurentValue(this.getXform().getXPos());
         this.lerpY.setCurentValue(this.getXform().getYPos());
@@ -147,9 +120,6 @@ class Hero extends engine.GameObject {
         this.lerpX.setFinal(this.xDist + this.getXform().getXPos());
         this.lerpY.setFinal(this.yDist + this.getXform().getYPos());
 
-        //this.lerpX.setFinal(xMouse * 150);
-        //this.lerpY.setFinal(yMouse * 150); 
-        //}
         
 
     }
@@ -158,20 +128,6 @@ class Hero extends engine.GameObject {
         let xform = this.getXform();
         let pos = this.getXform().getXPos();
 
-        //this.lerpX.setCurentValue(pos);
-        //this.lerpX.setFinal(xMouse);
-
-        //console.log(pos);
-/*         if(engine.input.isKeyClicked(engine.input.keys.L)) {
-            this.lerpX.setFinal(3);
-            //console.log("LLLLLLLLLLL");
-        } */
-
-        //this.getVectore(xMouse, yMouse);
-        //xform.incXPosBy(this.moveVec[0]);
-        //xform.incYPosBy(this.moveVec[1]);
-
-        //xform.incXPosBy(this.moveVec[0]);
 
         if(!this.lerpX.done()) {
 
@@ -180,9 +136,7 @@ class Hero extends engine.GameObject {
 
             this.lerpY.update();
             var y = this.lerpY.get();
-            //let xform = this.getXform();
-            //xform.incXPosBy(x);
-            //xform.incYPosBy(y);
+
 
             xform.setXPos(x);
             xform.setYPos(y);
@@ -214,24 +168,6 @@ class Hero extends engine.GameObject {
         let xform = this.getXform();
         let pos = this.getXform().getPosition();//this.xform().getPosition();
 
-/*         if(x > pos[0]) {
-            xform.incXPosBy(this.kDelta);
-        } 
-        else if (x < pos[0]){
-            xform.incXPosBy(-this.kDelta);   
-        }
-        else{
-            xform.incXPosBy(0);
-        }
-        if(y > pos[1]) {
-            xform.incYPosBy(this.kDelta);
-        }
-        else if (y < pos[1]){
-            xform.incYPosBy(-this.kDelta);
-        }
-        else{
-            xform.incYPosBy(0); 
-        } */
     }
 
     async oscsalateHero() {
