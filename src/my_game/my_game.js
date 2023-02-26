@@ -224,16 +224,20 @@ class MyGame extends engine.Scene {
             this.mToggleCamera1 = !this.mToggleCamera1;
         }
 
+
         if(engine.input.isKeyClicked(engine.input.keys.One)) {
-            this.mToggleCamera2 = !this.mToggleCamera2;
+            this.mToggleOverride2 = !this.mToggleOverride2;
+            this.mToggleCamera2 = this.mToggleOverride2;
         }
 
         if(engine.input.isKeyClicked(engine.input.keys.Two)) {
-            this.mToggleCamera3 = !this.mToggleCamera3;
+            this.mToggleOverride3 = !this.mToggleOverride3;
+            this.mToggleCamera3 = this.mToggleOverride3;
         }
 
         if(engine.input.isKeyClicked(engine.input.keys.Three)) {
-            this.mToggleCamera4 = !this.mToggleCamera4;
+            this.mToggleOverride4 = !this.mToggleOverride4;
+            this.mToggleCamera4 = this.mToggleOverride4;
         }
 
         //Extra credit
@@ -243,50 +247,81 @@ class MyGame extends engine.Scene {
 
 
         //Check if mDyeFollow doesn't exist
-        if(this.mDyeFollow[0] != null) {
-            if(!this.mHero.dyePacks.contains(this.mDyeFollow[0])) {
-                this.mToggleCamera2 = false;
-                this.mDyeFollow[0] = null;
-            }
+        if(this.mHero.dyePacks.size() == 0) {
+            this.mToggleCamera2 = false;
+            this.mDyeFollow[0] = null;
+            this.mHero.dyePacks.mLastDelete = -1;
+            this.mCamera2Follow = -1;
+            this.mToggleCamera3 = false;
+            this.mDyeFollow[1] = null;
+            this.mCamera3Follow = -1;
+            this.mToggleCamera4 = false;
+            this.mDyeFollow[2] = null;
+            this.mCamera4Follow = -1;
         }
-        
-        if(this.mDyeFollow[1] != null) {
-            if(!this.mHero.dyePacks.contains(this.mDyeFollow[1])) {
-                this.mToggleCamera3 = false;
-                this.mDyeFollow[1] = null;
-            }
+
+        if(this.mCamera2Follow == this.mHero.dyePacks.mLastDelete) {
+            this.mToggleCamera2 = false;
+            this.mDyeFollow[0] = null;
+            this.mHero.dyePacks.mLastDelete = -1;
+            this.mCamera2Follow = -1;
         }
-        
-        if(this.mDyeFollow[2] != null) {
-            if(!this.mHero.dyePacks.contains(this.mDyeFollow[2])) {
-                this.mToggleCamera4 = false;
-                this.mDyeFollow[2] = null;
-            }
+
+        if(this.mCamera3Follow == this.mHero.dyePacks.mLastDelete) {
+            this.mToggleCamera3 = false;
+            this.mDyeFollow[1] = null;
+            this.mHero.dyePacks.mLastDelete = -1;
+            this.mCamera3Follow = -1;
+        }
+
+        if(this.mCamera4Follow == this.mHero.dyePacks.mLastDelete) {
+            this.mToggleCamera4 = false;
+            this.mDyeFollow[2] = null;
+            this.mHero.dyePacks.mLastDelete = -1;
+            this.mCamera4Follow = -1;
         }
 
         //Updates as long as the dyepack exists
-        if(this.mToggleCamera2 && this.mHero.dyePacks.contains(this.mDyeFollow[0])) {
-            this.mMiniCamera2.setWCCenter(
-                
-            );
+        if(this.mToggleCamera2) {
+            if((this.mHero.dyePacks.getObjectAt(this.mCamera2Follow) === undefined) || 
+            (this.mHero.dyePacks.getObjectAt(this.mCamera2Follow) === undefined)) {
+                console.log("This would have crashed but this if statement sure came in handy!")
+            } else {
+                let x = this.mHero.dyePacks.getObjectAt(this.mCamera2Follow).mRenderComponent.getXform().getXPos();
+                let y = this.mHero.dyePacks.getObjectAt(this.mCamera2Follow).mRenderComponent.getXform().getYPos();
 
-            this.mMiniCamera2.update();
+                if(this.mCamera2Follow > -1) {
+                    this.mMiniCamera2.setWCCenter(x, y);
+                }
+            }
         } 
 
-        if(this.mToggleCamera3 && this.mHero.dyePacks.contains(this.mDyeFollow[1])) {
-            this.mMiniCamera3.setWCCenter(
+        if(this.mToggleCamera3) {
+            if((this.mHero.dyePacks.getObjectAt(this.mCamera3Follow) === undefined) || 
+            (this.mHero.dyePacks.getObjectAt(this.mCamera3Follow) === undefined)) {
+                console.log("This would have crashed but this if statement sure came in handy!")
+            } else {
+                let x = this.mHero.dyePacks.getObjectAt(this.mCamera3Follow).mRenderComponent.getXform().getXPos();
+                let y = this.mHero.dyePacks.getObjectAt(this.mCamera3Follow).mRenderComponent.getXform().getYPos();
 
-            );
-
-            this.mMiniCamera3.update();
+                if(this.mCamera3Follow > -1) {
+                    this.mMiniCamera3.setWCCenter(x, y);
+                }
+            }
         } 
 
-        if(this.mToggleCamera4 && this.mHero.dyePacks.contains(this.mDyeFollow[2])) {
-            this.mMiniCamera4.setWCCenter(
+        if(this.mToggleCamera4) {
+            if((this.mHero.dyePacks.getObjectAt(this.mCamera4Follow) === undefined) || 
+            (this.mHero.dyePacks.getObjectAt(this.mCamera4Follow) === undefined)) {
+                console.log("This would have crashed but this if statement sure came in handy!")
+            } else {
+                let x = this.mHero.dyePacks.getObjectAt(this.mCamera4Follow).mRenderComponent.getXform().getXPos();
+                let y = this.mHero.dyePacks.getObjectAt(this.mCamera4Follow).mRenderComponent.getXform().getYPos();
 
-            );
-
-            this.mMiniCamera4.update();
+                if(this.mCamera4Follow > -1) {
+                    this.mMiniCamera4.setWCCenter(x, y);
+                }
+            }
         }
 
         //Force spawns a patrol
@@ -326,28 +361,54 @@ class MyGame extends engine.Scene {
         //Toggle boundary AND check for hit event to add to the camera
         for(let i = 0; i < this.mPatrolSet.size(); i++) {
             this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
-            
-            if(this.mPatrolSet.getObjectAt(i).mIsHit && this.mHero.dyePacks.contains(this.mPatrolSet.getObjectAt(i).mDyeHit)) {
-                if(this.mDyeFollow[0] == null && (this.mDyeFollow[1] != this.mHero.dyePacks.getObjectAt(i) && this.mDyeFollow[2] != this.mHero.dyePacks.getObjectAt(i))) {
+        }
+        
+        for(let i = 0; i < this.mHero.dyePacks.size(); i++) {
+            if(this.mHero.dyePacks.getObjectAt(i).mHit) {
+                if(this.mDyeFollow[0] == null && 
+                    ((this.mDyeFollow[1] != this.mHero.dyePacks.getObjectAt(i)) && 
+                    (this.mDyeFollow[2] != this.mHero.dyePacks.getObjectAt(i)))) {
                     this.mDyeFollow[0] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera2Follow = i;
                     this.mToggleCamera2 = true;
-                    console.log("mtoggle true1")
-                } else if(this.mDyeFollow[1] == null && (this.mDyeFollow[0] != this.mHero.dyePacks.getObjectAt(i) && this.mDyeFollow[2] != this.mHero.dyePacks.getObjectAt(i))) {
+                    this.mToggleOverride2 = this.mToggleCamera2;
+                    /*this.mMiniCamera2.setWCCenter(this.mDyeFollow[0].mRenderComponent.getXform().getXPos(),
+                    this.mDyeFollow[0].mRenderComponent.getXform().getYPos()
+                    )*/
+                    console.log("follow 0")
+                } else if(this.mDyeFollow[1] == null && 
+                    ((this.mDyeFollow[0] != this.mHero.dyePacks.getObjectAt(i)) && (this.mCamera2Follow != i))) {
                     this.mDyeFollow[1] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera3Follow = i;
                     this.mToggleCamera3 = true;
-                    console.log("mtoggle true2")
+                    this.mToggleOverride3 = this.mToggleCamera3;
 
-                } else if(this.mDyeFollow[2] == null && (this.mDyeFollow[0] != this.mHero.dyePacks.getObjectAt(i) && this.mDyeFollow[1] != this.mHero.dyePacks.getObjectAt(i))) {
+                    /*this.mMiniCamera3.setWCCenter(this.mDyeFollow[1].mRenderComponent.getXform().getXPos(),
+                    this.mDyeFollow[1].mRenderComponent.getXform().getYPos()
+                    )*/
+
+                    this.mMiniCamera3.setWCCenter(this.mHero.mRenderComponent.getXform().getXPos(), this.mHero.mRenderComponent.getXform().getYPos());
+                    console.log("follow 1")
+                } else if(this.mDyeFollow[2] == null && 
+                    ((this.mDyeFollow[0] != this.mHero.dyePacks.getObjectAt(i)) && 
+                    (this.mDyeFollow[1] != this.mHero.dyePacks.getObjectAt(i)))) {
                     this.mDyeFollow[2] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera4Follow = i;
                     this.mToggleCamera4 = true;
-                    console.log("mtoggle true3")
+                    this.mToggleOverride4 = this.mToggleCamera4;
 
+                    /*this.mMiniCamera4.setWCCenter(this.mDyeFollow[2].mRenderComponent.getXform().getXPos(),
+                    this.mDyeFollow[2].mRenderComponent.getXform().getYPos()
+                    )*/
+                    this.mMiniCamera4.setWCCenter(this.mHero.mRenderComponent.getXform().getXPos(), this.mHero.mRenderComponent.getXform().getYPos());
+                    console.log("follow 2")
                 }
             }
         }
+
+        this.mMiniCamera2.update();
+        this.mMiniCamera3.update();
+        this.mMiniCamera4.update();
 
         this.mPatrolSet.update();
 
