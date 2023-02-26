@@ -90,7 +90,7 @@ class Hero extends engine.GameObject {
 
         //DyePack Termination: Time
         for (let i = 0; i < this.dyePacks.size(); i++){
-            if (this.dyePacks.getObjectAt(i).getTime() >= 360){
+            if (this.dyePacks.getObjectAt(i).getTime() >= 300){
                 this.dyePacks.removeFromSet(this.dyePacks.getObjectAt(i));
             }
         }
