@@ -230,18 +230,18 @@ class MyGame extends engine.Scene {
         }
 
         if(engine.input.isKeyClicked(engine.input.keys.One)) {
-            this.mToggleCamera2 = !this.mToggleCamera2;
             this.mToggleOverride2 = !this.mToggleOverride2;
+            this.mToggleCamera2 = this.mToggleOverride2;
         }
 
         if(engine.input.isKeyClicked(engine.input.keys.Two)) {
-            this.mToggleCamera3 = !this.mToggleCamera3;
             this.mToggleOverride3 = !this.mToggleOverride3;
+            this.mToggleCamera3 = this.mToggleOverride3;
         }
 
         if(engine.input.isKeyClicked(engine.input.keys.Three)) {
-            this.mToggleCamera4 = !this.mToggleCamera4;
             this.mToggleOverride4 = !this.mToggleOverride4;
+            this.mToggleCamera4 = this.mToggleOverride4;
         }
 
         //Extra credit
@@ -395,7 +395,7 @@ class MyGame extends engine.Scene {
                     this.mDyeFollow[0] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera2Follow = i;
                     this.mToggleCamera2 = true;
-
+                    this.mToggleOverride2 = this.mToggleCamera2;
                     /*this.mMiniCamera2.setWCCenter(this.mDyeFollow[0].mRenderComponent.getXform().getXPos(),
                     this.mDyeFollow[0].mRenderComponent.getXform().getYPos()
                     )*/
@@ -405,6 +405,7 @@ class MyGame extends engine.Scene {
                     this.mDyeFollow[1] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera3Follow = i;
                     this.mToggleCamera3 = true;
+                    this.mToggleOverride3 = this.mToggleCamera3;
 
                     /*this.mMiniCamera3.setWCCenter(this.mDyeFollow[1].mRenderComponent.getXform().getXPos(),
                     this.mDyeFollow[1].mRenderComponent.getXform().getYPos()
@@ -418,6 +419,7 @@ class MyGame extends engine.Scene {
                     this.mDyeFollow[2] = this.mHero.dyePacks.getObjectAt(i);
                     this.mCamera4Follow = i;
                     this.mToggleCamera4 = true;
+                    this.mToggleOverride4 = this.mToggleCamera4;
 
                     /*this.mMiniCamera4.setWCCenter(this.mDyeFollow[2].mRenderComponent.getXform().getXPos(),
                     this.mDyeFollow[2].mRenderComponent.getXform().getYPos()
