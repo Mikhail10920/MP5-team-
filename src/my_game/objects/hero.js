@@ -95,6 +95,12 @@ class Hero extends engine.GameObject {
             }
         }
 
+        //DyePack Termination: Bounds
+        for (let i = 0; i < this.dyePacks.size(); i++){
+            if (this.dyePacks.getObjectAt(i).getXform().getXPos() > 180){
+                this.dyePacks.removeFromSet(this.dyePacks.getObjectAt(i));
+            }
+        }
         this.oscsalateHeroUpdate();
 
         this.lerpStUp(this.mousePos[0], this.mousePos[1]);
