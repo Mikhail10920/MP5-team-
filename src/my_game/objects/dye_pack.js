@@ -23,6 +23,7 @@ class DyePack extends engine.GameObject {
 
         this.oscillateW = new engine.Oscillate(1.5, this.frequency, this.duration);
         this.oscillateH = new engine.Oscillate(1.5, this.frequency, this.duration);
+        this.mHit = false;
     }
 
     update() {
@@ -62,6 +63,7 @@ class DyePack extends engine.GameObject {
         
         this.oscillateW.reStart();
         this.oscillateH.reStart();
+        this.mHit = true;
     }
 }
 

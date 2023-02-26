@@ -247,6 +247,7 @@ class Patrol extends engine.GameObject {
                         this.mInvFrame = 0;
                         this.mIsHit = true;
                         this.mDyeHit = this.mCollide.dyePacks.getObjectAt(i);
+                        this.mCollide.dyePacks.getObjectAt(i).mHit = true;
                 }
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }

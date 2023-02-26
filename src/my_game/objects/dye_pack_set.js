@@ -9,6 +9,7 @@
 class DyePackSet {
     constructor() {
         this.mSet = [];
+        this.mLastDelete = -1;
     }
 
     size() { return this.mSet.length; }
@@ -23,6 +24,7 @@ class DyePackSet {
 
     removeFromSet(obj) {
         let index = this.mSet.indexOf(obj);
+        this.mLastDelete = index;
         if (index > -1)
             this.mSet.splice(index, 1);
     }

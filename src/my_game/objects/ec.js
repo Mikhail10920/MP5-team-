@@ -17,27 +17,36 @@ class ExtraCredit extends engine.GameObject {
         this.mInvFrame = 0;
         this.mRecentHit = false;
         this.mCollide = hero;
+        this.mShow = true;
     }
 
     draw(camera) {
-        this.mGus.draw(camera);
+        if(this.mShow) {
+            this.mGus.draw(camera);
+        }
     }
 
-    update() {     
-        this.mGus.mRenderComponent.getXform().setPosition(
-            this.mGus.mRenderComponent.getXform().getXPos(),
-            this.mGus.mRenderComponent.getXform().getYPos() + this.inc
-        );
+    update() {  
+        if(this.mShow) {
+            this.mGus.mRenderComponent.getXform().setPosition(
+                this.mGus.mRenderComponent.getXform().getXPos(),
+                this.mGus.mRenderComponent.getXform().getYPos() + this.inc
+            );
 
-        this.mMovementUnit += this.inc;
+            this.mMovementUnit += this.inc;
 
-        if(this.mMovementUnit == 0) {
-            this.inc = 1;
-        } else if(this.mMovementUnit == 100) {
-            this.inc = -1;
+            if(this.mMovementUnit == 0) {
+                this.inc = 1;
+            } else if(this.mMovementUnit == 50) {
+                this.inc = -1;
+            }
+
+            if(this.mHealth < 0) {
+                this.mShow = false;
+            }
+
+            this.checkForColisions();
         }
-
-        this.checkForColisions();
     }
 
     checkForColisions() {
@@ -48,16 +57,13 @@ class ExtraCredit extends engine.GameObject {
         if(this.mInvFrame == 100) {
             this.mInvFrame = 0;
             this.mRecentHit = false;
-            this.inc /= 2;
         }
 
         if(!this.mRecentHit) {
         for(i = 0; i < this.mCollide.dyePacks.size(); i++) {
             if (this.mGus.pixelTouches(this.mCollide.dyePacks.getObjectAt(i), h)) {
-                console.log("cuh");
                 this.mHealth -= 1;
                 this.mRecentHit = true;
-                this.inc *= 2;
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
         }
