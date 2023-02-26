@@ -248,12 +248,16 @@ class MyGame extends engine.Scene {
                 this.mToggleCamera2 = false;
                 this.mDyeFollow[0] = null;
             }
-        } else if(this.mDyeFollow[1] != null) {
+        }
+        
+        if(this.mDyeFollow[1] != null) {
             if(!this.mHero.dyePacks.contains(this.mDyeFollow[1])) {
                 this.mToggleCamera3 = false;
                 this.mDyeFollow[1] = null;
             }
-        } else if(this.mDyeFollow[2] != null) {
+        }
+        
+        if(this.mDyeFollow[2] != null) {
             if(!this.mHero.dyePacks.contains(this.mDyeFollow[2])) {
                 this.mToggleCamera4 = false;
                 this.mDyeFollow[2] = null;
@@ -267,28 +271,22 @@ class MyGame extends engine.Scene {
             );
 
             this.mMiniCamera2.update();
-        } else if(this.mToggleCamera3 && this.mHero.dyePacks.contains(this.mDyeFollow[1])) {
+        } 
+
+        if(this.mToggleCamera3 && this.mHero.dyePacks.contains(this.mDyeFollow[1])) {
             this.mMiniCamera3.setWCCenter(
 
             );
 
             this.mMiniCamera3.update();
-        } else if(this.mToggleCamera4 && this.mHero.dyePacks.contains(this.mDyeFollow[2])) {
+        } 
+
+        if(this.mToggleCamera4 && this.mHero.dyePacks.contains(this.mDyeFollow[2])) {
             this.mMiniCamera4.setWCCenter(
 
             );
 
             this.mMiniCamera4.update();
-        } else {
-            this.mToggleCamera2 = false;
-            this.mToggleCamera3 = false;
-            this.mToggleCamera4 = false;
-            this.mDyeFollow[0] = null;
-            this.mDyeFollow[1] = null;
-            this.mDyeFollow[2] = null;
-            this.mCamera3Follow = -1;
-            this.mCamera2Follow = -1;
-            this.mCamera4Follow = -1;
         }
 
         //Force spawns a patrol
@@ -354,13 +352,12 @@ class MyGame extends engine.Scene {
         this.mPatrolSet.update();
 
         //End of Trevor's Code
-        let ECArray = [];
 
         //Message output
         let msg = "Patrol Spawned Total: " + this.mPatrolTotal + 
         " Dyepack Spawned Total: " + this.mHero.dyePacks.size()  + 
         " AutoSpawn: " + this.mPatrolSet.size() +
-        "Mouse X and Y " + this.mouseXPos + " " + this.mouseYPos;
+        " Mouse X and Y " + this.mouseXPos + " " + this.mouseYPos;
 
         this.mHero.update();
 
