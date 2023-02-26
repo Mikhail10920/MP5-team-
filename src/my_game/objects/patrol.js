@@ -78,6 +78,13 @@ class Patrol extends engine.GameObject {
         this.lerpX2 = new engine.Lerp(0, 120, 0.05);
         this.lerpY2 = new engine.Lerp(0, 120, 0.05);
 
+        this.mRate = 60;
+
+        this.rand = Math.floor(Math.random() * 2);
+        if(this.rand) {
+            this.secondType();
+        }
+
     }
 
     load() {
@@ -127,7 +134,7 @@ class Patrol extends engine.GameObject {
         if(this.mMoveUnit <= 0) {
             this.mCurrentDirection = Math.floor(Math.random() * 4); //0 - 3
             this.mMoveUnit = Math.floor(Math.random() * 10) + 5; // 5 - 10
-            this.mMoveRate = this.mMoveUnit / 60; //The rate that it will go through in 1 second
+            this.mMoveRate = this.mMoveUnit / this.mRate; //The rate that it will go through in 1 second
         }
 
         //Moves a specified direction at randomized unit
@@ -292,7 +299,7 @@ class Patrol extends engine.GameObject {
         this.xDist = (xMouse - xPos);
         this.yDist = (yMouse - yPos);
 
-        console.log(this.xDist, this.yDist);
+        //console.log(this.xDist, this.yDist);
 
 
         this.lerpX1.setCurentValue(this.mWingTop.getXform().getXPos());
@@ -364,6 +371,28 @@ class Patrol extends engine.GameObject {
 
     boundaryToggle(toggle) {
         this.showBoundary = toggle;
+    }
+
+    secondType() {
+        this.mHead.mRenderComponent.setColor([this.mHead.mRenderComponent.getColor()[0],
+        this.mHead.mRenderComponent.getColor()[1],
+        this.mHead.mRenderComponent.getColor()[2]  + 3.5,
+        this.mHead.mRenderComponent.getColor()[3]]);
+
+        this.mWingBot.mRenderComponent.setColor([this.mWingBot.mRenderComponent.getColor()[0],
+        this.mWingBot.mRenderComponent.getColor()[1],
+        this.mWingBot.mRenderComponent.getColor()[2]  + 2.5,
+        this.mWingBot.mRenderComponent.getColor()[3]]);
+
+        this.mWingTop.mRenderComponent.setColor([this.mWingTop.mRenderComponent.getColor()[0],
+        this.mWingTop.mRenderComponent.getColor()[1],
+        this.mWingTop.mRenderComponent.getColor()[2]  + 2.5,
+        this.mWingTop.mRenderComponent.getColor()[3]]);
+
+        this.mRate = 30;
+        //this.mWingBot;
+        //this.mWingTop;
+
     }
 
 }
