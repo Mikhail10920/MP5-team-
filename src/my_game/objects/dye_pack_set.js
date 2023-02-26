@@ -26,6 +26,15 @@ class DyePackSet {
         if (index > -1)
             this.mSet.splice(index, 1);
     }
+
+    contains(obj) {
+        let index = this.mSet.indexOf(obj);
+        if(index > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     update() {
         let i;

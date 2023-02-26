@@ -7,6 +7,7 @@ import Brain from "./brain.js";
 //import Hero from "./objects/hero.js";
 import Minion from "./minion.js";
 import TextureObject from "./texture_object.js";
+import DyePack from "./dye_pack.js";
 
 class Patrol extends engine.GameObject {
     constructor(hero, spriteTexture, spriteTextureHead, atX, atY) {
@@ -57,7 +58,7 @@ class Patrol extends engine.GameObject {
         this.mRecentHit = false;
         this.mInvFrame = 0.0;
         this.mIsHit = false;
-        this.mIndexOfDye = -1;
+        this.mDyeHit = null;
 
         //If true, removes from set
         this.mCanDelete = false;
@@ -236,7 +237,7 @@ class Patrol extends engine.GameObject {
                     this.mRecentHit = true;
                     this.mInvFrame = 0;
                     this.mIsHit = true;
-                    this.mIndexOfDye = i;
+                    this.mDyeHit = this.mCollide.dyePacks.getObjectAt(i);
                 }
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
@@ -254,7 +255,7 @@ class Patrol extends engine.GameObject {
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
                         this.mIsHit = true;
-                        this.mIndexOfDye = i;
+                        this.mDyeHit = this.mCollide.dyePacks.getObjectAt(i);
                 }
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
@@ -272,7 +273,7 @@ class Patrol extends engine.GameObject {
                         this.mRecentHit = true;
                         this.mInvFrame = 0;
                         this.mIsHit = true;
-                        this.mIndexOfDye = i;
+                        this.mDyeHit = this.mCollide.dyePacks.getObjectAt(i);
                 }
                 this.mCollide.dyePacks.getObjectAt(i).slowDown();
             }
