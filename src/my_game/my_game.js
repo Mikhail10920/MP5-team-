@@ -56,13 +56,17 @@ class MyGame extends engine.Scene {
         //Dyepack camera
         //Follow is the index
         this.mToggleCamera2 = false;
-        this.mCamera2Follow = null;
+        this.mCamera2Follow = -1;
 
         this.mToggleCamera3 = false;
-        this.mCamera3Follow = null;
+        this.mCamera3Follow = -1;
 
         this.mToggleCamera4 = false;
-        this.mCamera4Follow = null;
+        this.mCamera4Follow = -1;
+        
+        this.mToggleOverride2 = false;
+        this.mToggleOverride3 = false;
+        this.mToggleOverride4 = false;
 
         //Objects
         this.mDyeFollow = [null, null, null];
@@ -169,25 +173,19 @@ class MyGame extends engine.Scene {
 
         this.mHero.drawPyePacks(this.mCamera);
 
-        if(this.mToggleCamera1) {
-            this.mMiniCamera1.setViewAndCameraMatrix();
-            this.mHero.draw(this.mMiniCamera1);
-            this.mHero.dyePacks.draw(this.mMiniCamera1);
-        }
-
-        if(this.mToggleCamera2) {
+        if(this.mToggleCamera2 || this.mToggleOverride2) {
             this.mMiniCamera2.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera2);
             this.mHero.dyePacks.draw(this.mMiniCamera2);
         }
 
-        if(this.mToggleCamera3) {
+        if(this.mToggleCamera3 || this.mToggleOverride3) {
             this.mMiniCamera3.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera3);
             this.mHero.dyePacks.draw(this.mMiniCamera3);
         }
 
-        if(this.mToggleCamera4) {
+        if(this.mToggleCamera4 || this.mToggleOverride4) {
             this.mMiniCamera4.setViewAndCameraMatrix();
             this.mHero.draw(this.mMiniCamera4);
             this.mHero.dyePacks.draw(this.mMiniCamera4);
@@ -362,7 +360,7 @@ class MyGame extends engine.Scene {
         for(let i = 0; i < this.mPatrolSet.size(); i++) {
             this.mPatrolSet.getObjectAt(i).boundaryToggle(this.mToggleBoundary);
         }
-        
+
         for(let i = 0; i < this.mHero.dyePacks.size(); i++) {
             if(this.mHero.dyePacks.getObjectAt(i).mHit) {
                 if(this.mDyeFollow[0] == null && 
