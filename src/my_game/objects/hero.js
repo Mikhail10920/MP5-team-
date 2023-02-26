@@ -38,12 +38,18 @@ class Hero extends engine.GameObject {
         this.oscillateW = new engine.Oscillate(4.5, this.frequency, this.duration);
         this.oscillateH = new engine.Oscillate(6, this.frequency, this.duration);
 
-        this.lerpX = new engine.Lerp(0, 120, 0.01);
-        this.lerpY = new engine.Lerp(0, 120, 0.01);
+        this.lerpX = new engine.Lerp(0, 120, 0.1);
+        this.lerpY = new engine.Lerp(0, 120, 0.1);
 
 
 
         this.moveVec = [0,0];
+
+        this.mousePos = [0,0];
+
+
+        this.xDist = 0;
+        this.yDist = 0;
     }
 
     update() {
@@ -91,20 +97,59 @@ class Hero extends engine.GameObject {
 
         this.oscsalateHeroUpdate();
 
-        this.lerpStUp(this.moveVec[0], this.moveVec[1]);
+        this.lerpStUp(this.mousePos[0], this.mousePos[1]);
 
         //this.lerpMovement();
 
     }
 
     lerpStUp(xMouse, yMouse) {
+
+        let xPos = this.getXform().getXPos();
+        let yPos = this.getXform().getYPos();
+
+        this.xDist = (xMouse - xPos);
+        this.yDist = (yMouse - yPos);
+
+
 /*         if(engine.input.isKeyPressed(engine.input.keys.L)) {
             this.lerpX.setFinal(xMouse);
             this.lerpY.setFinal(yMouse);
         } */
-        sleep(1);
-        this.lerpX.setFinal(xMouse);
-        this.lerpY.setFinal(yMouse);
+        //sleep(1);
+        //if(engine.input.isKeyPressed(engine.input.keys.L)) {
+        //if(engine.input.isKeyClicked(engine.input.keys.L)) {
+
+/*             let pos = this.getXform().getXPos();
+
+            this.lerpX.setCurentValue(pos[0]);
+            this.lerpY.setCurentValue(pos[1]); */
+            
+            //console.log(xMouse, yMouse);
+
+            //let posX = this.getXform().getXPos();
+            //let posY = this.getXform().getYPos();
+            //console.log(pos);
+
+            //this.lerpX.setCurentValue(posX);
+            //this.lerpY.setCurentValue(posY);
+            //this.getVectore(xMouse, yMouse);
+
+            //console.log(this.xDist, this.yDist);
+            console.log(this.xDist, this.yDist);
+
+            //this.lerpX.setFinal(this.xDist * 150);
+            //this.lerpY.setFinal(this.yDist * 150);
+
+        this.lerpX.setCurentValue(this.getXform().getXPos());
+        this.lerpY.setCurentValue(this.getXform().getYPos());
+
+        this.lerpX.setFinal(this.xDist + this.getXform().getXPos());
+        this.lerpY.setFinal(this.yDist + this.getXform().getYPos());
+
+        //this.lerpX.setFinal(xMouse * 150);
+        //this.lerpY.setFinal(yMouse * 150); 
+        //}
         
 
     }
@@ -122,7 +167,7 @@ class Hero extends engine.GameObject {
             //console.log("LLLLLLLLLLL");
         } */
 
-        this.getVectore(xMouse, yMouse);
+        //this.getVectore(xMouse, yMouse);
         //xform.incXPosBy(this.moveVec[0]);
         //xform.incYPosBy(this.moveVec[1]);
 
@@ -136,8 +181,11 @@ class Hero extends engine.GameObject {
             this.lerpY.update();
             var y = this.lerpY.get();
             //let xform = this.getXform();
-            xform.incXPosBy(x);
-            xform.incYPosBy(y);
+            //xform.incXPosBy(x);
+            //xform.incYPosBy(y);
+
+            xform.setXPos(x);
+            xform.setYPos(y);
             //console.log("LLLLLLLLLLL");
         }
         else {
@@ -215,14 +263,23 @@ class Hero extends engine.GameObject {
 
 
     getVectore(xMouse, yMouse) {
+
+        this.mousePos = [xMouse, yMouse];
+
         let xPos = this.getXform().getXPos();
         let yPos = this.getXform().getYPos();
 
         let length = (Math.sqrt(Math.pow((xMouse - xPos), 2) + Math.pow(yMouse - yPos, 2)));
 
+        //console.log(xMouse, yMouse, xPos, yPos);
+        this.xDist = (xMouse - xPos);
+        this.yDist = (yMouse - yPos);
+        //console.log(this.xDist, this.yDist);
         this.moveVec = [(xMouse - xPos) / length, (yMouse - yPos) / length];
 
-        console.log(this.moveVec);
+
+
+        //console.log(this.moveVec);
     }
 
 
@@ -263,7 +320,7 @@ async function requestFrameCount(framesLimeint) {
         } */
         framesLimeint = true;
         await sleep(0.0166);
-        console.log(framesLimeint);
+        //console.log(framesLimeint);
     }
     framesLimeint = false;
     return;
